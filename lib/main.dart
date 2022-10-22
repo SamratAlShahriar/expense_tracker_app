@@ -15,7 +15,8 @@ class _LaunchAppState extends State<LaunchApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      
+      initialRoute: '',
+      routes: {},
     );
   }
 }
