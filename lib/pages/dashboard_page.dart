@@ -1,8 +1,12 @@
 import 'package:expense_tracker_app/custom_widgets/dashboard_page_button.dart';
+import 'package:expense_tracker_app/custom_widgets/dashboard_page_top_cards.dart';
 import 'package:expense_tracker_app/pages/add_expense_income_page.dart';
 import 'package:expense_tracker_app/pages/analysis_page.dart';
+import 'package:expense_tracker_app/pages/history_page.dart';
 import 'package:expense_tracker_app/themes/colors.dart';
 import 'package:flutter/material.dart';
+
+import 'loan_page.dart';
 
 class DashboardPage extends StatefulWidget {
   static const String routeName = '/dashboard_page';
@@ -19,13 +23,6 @@ class _DashboardPageState extends State<DashboardPage> {
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          actions: [
-            CircleAvatar(
-              child: Icon(Icons.person),
-            )
-          ],
-        ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
@@ -34,18 +31,16 @@ class _DashboardPageState extends State<DashboardPage> {
             Navigator.pushNamed(context, AddIncomeOrExpensePage.routeName);
           },
         ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 16.0,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: 8.0,
-              ),
-              //welcome user text
-              Row(
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: 8.0,
+            ),
+            //welcome user text
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Row(
                 children: [
                   Text(
                     'Welcome, ',
@@ -57,65 +52,98 @@ class _DashboardPageState extends State<DashboardPage> {
                   ),
                 ],
               ),
+            ),
 
-              SizedBox(
-                height: 8.0,
-              ),
+            SizedBox(
+              height: 8.0,
+            ),
 
-              //dashboard card for income expense and loan
-              SizedBox(
-                height: 150.0,
-                child: Card(
-                  elevation: 5.0,
-                  shadowColor: Colors.black,
-                  child: Row(
-                    children: [],
-                  ),
-                ),
-              ),
-
-              SizedBox(
-                height: 8.0,
-              ),
-
-              //dashboard navigate button
-              SizedBox(
-                height: 100.0,
-                child: ListView(
-                  shrinkWrap: true,
-                  physics: BouncingScrollPhysics(),
-                  scrollDirection: Axis.horizontal,
+            //dashboard card for income expense and loan
+            SizedBox(
+              height: 160.0,
+              child: Card(
+                elevation: 5.0,
+                shadowColor: Colors.black,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    CardButtonForDashboard(
-                      btnTxt: "Loan",
-                      btnIcon: Icons.monetization_on_outlined,
-                      btnIconBgColor: Colors.orange,
-                      btnBgColor: Colors.red,
-                      btnOnClickRoute: AnalysisPage.routeName,
+                    Expanded(
+                      flex: 1,
+                      child: DashboardCardGenerator(
+                          cardType: 'Income',
+                          iconType: Icons.arrow_downward,
+                          iconColor: Colors.green,
+                          cardAmount: '100999'),
                     ),
-                    CardButtonForDashboard(
-                      btnTxt: "History",
-                      btnIcon: Icons.history,
-                      btnIconBgColor: Colors.orange,
-                      btnBgColor: Colors.green,
-                      btnOnClickRoute: AnalysisPage.routeName,
+                    Expanded(
+                      flex: 1,
+                      child: DashboardCardGenerator(
+                          cardType: 'Expense',
+                          iconType: Icons.arrow_upward,
+                          iconColor: Colors.red,
+                          cardAmount: '100000'),
                     ),
-                    CardButtonForDashboard(
-                      btnTxt: 'ANALYSIS',
-                      btnIcon: Icons.analytics,
-                      btnIconBgColor: Colors.orange,
-                      btnBgColor: Colors.deepPurple,
-                      btnOnClickRoute: AnalysisPage.routeName,
+                    Expanded(
+                      flex: 1,
+                      child: DashboardCardGenerator(
+                          cardType: 'Loan',
+                          iconType: Icons.call_missed,
+                          iconColor: Color(0xFFFF9514),
+                          cardAmount: '100000'),
                     ),
                   ],
                 ),
               ),
+            ),
 
-              //recent history of transactions
-              SizedBox(
-                height: 8.0,
+            SizedBox(
+              height: 16.0,
+            ),
+
+            //dashboard navigate button
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Text('Choose an option', style: Theme.of(context).textTheme.headlineSmall,),
+            ),
+            SizedBox(
+              height: 100.0,
+              child: ListView(
+                shrinkWrap: true,
+                physics: BouncingScrollPhysics(),
+                scrollDirection: Axis.horizontal,
+                children: [
+                  CardButtonForDashboard(
+                    btnTxt: "Loan",
+                    btnIcon: Icons.monetization_on_outlined,
+                    btnIconBgColor: Colors.orange,
+                    btnBgColor: Colors.red,
+                    btnOnClickRoute: LoanPage.routeName,
+                  ),
+                  CardButtonForDashboard(
+                    btnTxt: "History",
+                    btnIcon: Icons.history,
+                    btnIconBgColor: Colors.orange,
+                    btnBgColor: Colors.green,
+                    btnOnClickRoute: HistoryPage.routeName,
+                  ),
+                  CardButtonForDashboard(
+                    btnTxt: 'ANALYSIS',
+                    btnIcon: Icons.analytics,
+                    btnIconBgColor: Colors.orange,
+                    btnBgColor: Colors.deepPurple,
+                    btnOnClickRoute: AnalysisPage.routeName,
+                  ),
+                ],
               ),
-              Expanded(
+            ),
+
+            //recent history of transactions
+            SizedBox(
+              height: 8.0,
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0,),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -141,8 +169,8 @@ class _DashboardPageState extends State<DashboardPage> {
                   ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
         bottomNavigationBar: BottomNavigationBar(
           items: [
