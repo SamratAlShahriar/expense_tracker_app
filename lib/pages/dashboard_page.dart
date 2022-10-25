@@ -1,24 +1,31 @@
+import 'package:expense_tracker_app/custom_widgets/dashboard_page_button.dart';
 import 'package:expense_tracker_app/pages/add_expense_income_page.dart';
+import 'package:expense_tracker_app/pages/analysis_page.dart';
 import 'package:expense_tracker_app/themes/colors.dart';
 import 'package:flutter/material.dart';
 
-class Dashboard extends StatefulWidget {
-  static const String routeName = '/dashboard';
+class DashboardPage extends StatefulWidget {
+  static const String routeName = '/dashboard_page';
 
-  const Dashboard({Key? key}) : super(key: key);
+  const DashboardPage({Key? key}) : super(key: key);
 
   @override
-  State<Dashboard> createState() => _DashboardState();
+  State<DashboardPage> createState() => _DashboardPageState();
 }
 
-class _DashboardState extends State<Dashboard> {
-  var chipType = "Expense";
-
+class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Color(0xFFFCFCFC),
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          actions: [
+            CircleAvatar(
+              child: Icon(Icons.person),
+            )
+          ],
+        ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
@@ -27,323 +34,115 @@ class _DashboardState extends State<Dashboard> {
             Navigator.pushNamed(context, AddIncomeOrExpensePage.routeName);
           },
         ),
-        body: Column(
-          children: [
-            Card(
-              elevation: 10.0,
-              color: colorWhite,
-              margin: EdgeInsets.all(20),
-              shadowColor: Colors.white38,
-              child: Container(
-                height: 200,
-                width: double.infinity,
-                decoration: BoxDecoration(),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 16.0,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 8.0,
               ),
-            ),
-            SizedBox(
-              width: double.infinity,
-              height: 100,
-              child: ListView(
-                shrinkWrap: true,
-                physics: ClampingScrollPhysics(),
-                scrollDirection: Axis.horizontal,
-                padding: EdgeInsets.symmetric(vertical: 8),
+              //welcome user text
+              Row(
                 children: [
-                  Card(
-                    color: colorWhite,
-                    elevation: 5,
-                    shadowColor: colorBlack,
-                    margin: EdgeInsets.symmetric(horizontal: 8),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5)),
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        left: 12,
-                        right: 12,
-                        top: 8,
-                        bottom: 8,
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          CircleAvatar(
-                              backgroundColor: Colors.black,
-                              foregroundColor: Colors.white,
-                              child: Icon(
-                                Icons.analytics,
-                              )),
-                          Text(
-                            'Analytics',
-                            style: TextStyle(
-                              color: Colors.blue,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
+                  Text(
+                    'Welcome, ',
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
-                  Card(
-                    color: colorWhite,
-                    margin: EdgeInsets.symmetric(horizontal: 8),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5)),
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        left: 12,
-                        right: 12,
-                        top: 8,
-                        bottom: 8,
-                      ),
-                      child: Column(
-                        children: [
-                          CircleAvatar(
-                              backgroundColor: Colors.black,
-                              foregroundColor: Colors.white,
-                              child: Icon(
-                                Icons.analytics,
-                              )),
-                          Text(
-                            'Analytics',
-                            style: TextStyle(
-                              color: Colors.blue,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  Card(
-                    color: colorWhite,
-                    margin: EdgeInsets.symmetric(horizontal: 8),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5)),
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        left: 12,
-                        right: 12,
-                        top: 8,
-                        bottom: 8,
-                      ),
-                      child: Column(
-                        children: [
-                          CircleAvatar(
-                              backgroundColor: Colors.black,
-                              foregroundColor: Colors.white,
-                              child: Icon(
-                                Icons.analytics,
-                              )),
-                          Text(
-                            'Analytics',
-                            style: TextStyle(
-                              color: Colors.blue,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  Card(
-                    color: colorWhite,
-                    margin: EdgeInsets.symmetric(horizontal: 8),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5)),
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        left: 12,
-                        right: 12,
-                        top: 8,
-                        bottom: 8,
-                      ),
-                      child: Column(
-                        children: [
-                          CircleAvatar(
-                              backgroundColor: Colors.black,
-                              foregroundColor: Colors.white,
-                              child: Icon(
-                                Icons.analytics,
-                              )),
-                          Text(
-                            'Analytics',
-                            style: TextStyle(
-                              color: Colors.blue,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  Card(
-                    color: colorWhite,
-                    margin: EdgeInsets.symmetric(horizontal: 8),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5)),
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        left: 12,
-                        right: 12,
-                        top: 8,
-                        bottom: 8,
-                      ),
-                      child: Column(
-                        children: [
-                          CircleAvatar(
-                              backgroundColor: Colors.black,
-                              foregroundColor: Colors.white,
-                              child: Icon(
-                                Icons.analytics,
-                              )),
-                          Text(
-                            'Analytics',
-                            style: TextStyle(
-                              color: Colors.blue,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  Card(
-                    color: colorWhite,
-                    margin: EdgeInsets.symmetric(horizontal: 8),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5)),
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        left: 12,
-                        right: 12,
-                        top: 8,
-                        bottom: 8,
-                      ),
-                      child: Column(
-                        children: [
-                          CircleAvatar(
-                              backgroundColor: Colors.black,
-                              foregroundColor: Colors.white,
-                              child: Icon(
-                                Icons.analytics,
-                              )),
-                          Text(
-                            'Analytics',
-                            style: TextStyle(
-                              color: Colors.blue,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  Card(
-                    color: colorWhite,
-                    margin: EdgeInsets.symmetric(horizontal: 8),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5)),
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        left: 12,
-                        right: 12,
-                        top: 8,
-                        bottom: 8,
-                      ),
-                      child: Column(
-                        children: [
-                          CircleAvatar(
-                              backgroundColor: Colors.black,
-                              foregroundColor: Colors.white,
-                              child: Icon(
-                                Icons.analytics,
-                              )),
-                          Text(
-                            'Analytics',
-                            style: TextStyle(
-                              color: Colors.blue,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  Card(
-                    color: colorWhite,
-                    margin: EdgeInsets.symmetric(horizontal: 8),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5)),
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        left: 12,
-                        right: 12,
-                        top: 8,
-                        bottom: 8,
-                      ),
-                      child: Column(
-                        children: [
-                          CircleAvatar(
-                              backgroundColor: Colors.black,
-                              foregroundColor: Colors.white,
-                              child: Icon(
-                                Icons.analytics,
-                              )),
-                          Text(
-                            'Analytics',
-                            style: TextStyle(
-                              color: Colors.blue,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
+                  Text(
+                    'Samrat Al Shahriar',
+                    style: Theme.of(context).textTheme.titleLarge,
                   ),
                 ],
               ),
-            ),
-            Row(
-              children: [
-                ChoiceChip(
-                  elevation: 1,
-                  label: Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Text(
-                      'Income',
-                      style: TextStyle(
-                        fontSize: 20,
-                        color:
-                            chipType == 'Income' ? Colors.white : Colors.green,
+
+              SizedBox(
+                height: 8.0,
+              ),
+
+              //dashboard card for income expense and loan
+              SizedBox(
+                height: 150.0,
+                child: Card(
+                  elevation: 5.0,
+                  shadowColor: Colors.black,
+                  child: Row(
+                    children: [],
+                  ),
+                ),
+              ),
+
+              SizedBox(
+                height: 8.0,
+              ),
+
+              //dashboard navigate button
+              SizedBox(
+                height: 100.0,
+                child: ListView(
+                  shrinkWrap: true,
+                  physics: BouncingScrollPhysics(),
+                  scrollDirection: Axis.horizontal,
+                  children: [
+                    CardButtonForDashboard(
+                      btnTxt: "Loan",
+                      btnIcon: Icons.monetization_on_outlined,
+                      btnIconBgColor: Colors.orange,
+                      btnBgColor: Colors.red,
+                      btnOnClickRoute: AnalysisPage.routeName,
+                    ),
+                    CardButtonForDashboard(
+                      btnTxt: "History",
+                      btnIcon: Icons.history,
+                      btnIconBgColor: Colors.orange,
+                      btnBgColor: Colors.green,
+                      btnOnClickRoute: AnalysisPage.routeName,
+                    ),
+                    CardButtonForDashboard(
+                      btnTxt: 'ANALYSIS',
+                      btnIcon: Icons.analytics,
+                      btnIconBgColor: Colors.orange,
+                      btnBgColor: Colors.deepPurple,
+                      btnOnClickRoute: AnalysisPage.routeName,
+                    ),
+                  ],
+                ),
+              ),
+
+              //recent history of transactions
+              SizedBox(
+                height: 8.0,
+              ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Recent History',
+                      style: Theme.of(context).textTheme.headlineSmall,
+                    ),
+                    Expanded(
+                      child: ListView(
+                        shrinkWrap: true,
+                        physics: BouncingScrollPhysics(),
+                        children: List.generate(
+                            14,
+                            (index) => ListTile(
+                                  leading:
+                                      Icon(Icons.share_arrival_time_outlined),
+                                  title: Text('Tilegle'),
+                                  subtitle: Text('sublagjrt'),
+                                  trailing: Text('12 .55 .65852 '),
+                                )),
                       ),
                     ),
-                  ),
-                  selected: chipType == 'Income' ? true : false,
-                  backgroundColor: Colors.white70,
-                  selectedColor: Colors.green,
-                  onSelected: (value) {
-                    setState(() {
-                      chipType = 'Income';
-                    });
-                  },
+                  ],
                 ),
-                ChoiceChip(
-                  elevation: 1,
-                  label: Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Text(
-                      'Expense',
-                      style: TextStyle(
-                        fontSize: 20,
-                        color:
-                            chipType == 'Expense' ? Colors.white : Colors.green,
-                      ),
-                    ),
-                  ),
-                  selected: chipType == 'Expense' ? true : false,
-                  backgroundColor: Colors.white70,
-                  selectedColor: Colors.green,
-                  onSelected: (value) {
-                    setState(() {
-                      chipType = 'Expense';
-                    });
-                  },
-                ),
-              ],
-            ),
-          ],
+              ),
+            ],
+          ),
         ),
         bottomNavigationBar: BottomNavigationBar(
           items: [

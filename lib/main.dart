@@ -1,5 +1,7 @@
 import 'package:expense_tracker_app/pages/add_expense_income_page.dart';
+import 'package:expense_tracker_app/pages/analysis_page.dart';
 import 'package:expense_tracker_app/pages/dashboard_page.dart';
+import 'package:expense_tracker_app/themes/app_theme.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -17,10 +19,12 @@ class _MyPocketState extends State<MyPocket> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: Dashboard.routeName,
+      initialRoute: DashboardPage.routeName,
+      theme: pocketTheme,
       routes: {
-        Dashboard.routeName: (context) => Dashboard(),
+        DashboardPage.routeName: (context) => DashboardPage(),
         AddIncomeOrExpensePage.routeName: (context) => AddIncomeOrExpensePage(),
+        AnalysisPage.routeName: (context) => AnalysisPage(),
       },
     );
   }

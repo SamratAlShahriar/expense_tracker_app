@@ -10,12 +10,63 @@ class AddIncomeOrExpensePage extends StatefulWidget {
 }
 
 class _AddIncomeOrExpensePageState extends State<AddIncomeOrExpensePage> {
+  var chipType = "Expense";
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         body: Column(
           children: [
+            Row(
+              children: [
+                ChoiceChip(
+                  elevation: 1,
+                  label: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Text(
+                      'Income',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color:
+                        chipType == 'Income' ? Colors.white : Colors.green,
+                      ),
+                    ),
+                  ),
+                  selected: chipType == 'Income' ? true : false,
+                  backgroundColor: Colors.white70,
+                  selectedColor: Colors.green,
+                  onSelected: (value) {
+                    setState(() {
+                      chipType = 'Income';
+                    });
+                  },
+                ),
+                ChoiceChip(
+                  elevation: 1,
+                  label: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Text(
+                      'Expense',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontFamily: 'Poppins',
+                        color:
+                        chipType == 'Expense' ? Colors.white : Colors.green,
+                      ),
+                    ),
+                  ),
+                  selected: chipType == 'Expense' ? true : false,
+                  backgroundColor: Colors.white70,
+                  selectedColor: Colors.green,
+                  onSelected: (value) {
+                    setState(() {
+                      chipType = 'Expense';
+                    });
+                  },
+                ),
+              ],
+            ),
             Container(
               decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
@@ -44,7 +95,7 @@ class _AddIncomeOrExpensePageState extends State<AddIncomeOrExpensePage> {
                   ),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),
