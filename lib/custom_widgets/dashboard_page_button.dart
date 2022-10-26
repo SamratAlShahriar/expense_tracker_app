@@ -23,14 +23,14 @@ class CardButtonForDashboard extends StatelessWidget {
         Navigator.pushNamed(context, btnOnClickRoute);
       },
       child: Card(
-        elevation: 5,
+        elevation: 2.0,
         color: btnBgColor,
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8)),
+            borderRadius: BorderRadius.circular(8.0)),
         child: Container(
-          padding: EdgeInsets.symmetric(
+          padding: EdgeInsets.symmetric
+            (
             horizontal: 32.0,
-            vertical: 8.0,
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -38,11 +38,13 @@ class CardButtonForDashboard extends StatelessWidget {
               CircleAvatar(
                   backgroundColor: btnIconBgColor,
                   foregroundColor: Colors.white,
+                  radius: 16.0,
                   child: Icon(
                     btnIcon,
+                    size: 20.0,
                   )),
               SizedBox(
-                height: 4.0,
+                height: 2.0,
               ),
               Center(
                 child: Text(

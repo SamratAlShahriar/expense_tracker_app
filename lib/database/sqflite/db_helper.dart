@@ -7,6 +7,7 @@ class DbHelper {
   static const String CREATE_TALBE_TRANSACTION =
       '''CREATE TABLE $TABLE_TRANSACTION(
   $T_TRANS_COL_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+  $T_TRANS_COLS_U_ID INTEGER,
   $T_TRANS_COL_TYPE TEXT,
   $T_TRANS_COL_AMOUNT REAL,
   $T_TRANS_COL_NOTE TEXT,
@@ -26,5 +27,12 @@ class DbHelper {
   static Future<int> insertTransaction(TransactionModel transactionModel) async {
     final db = await open();
     return db.insert(TABLE_TRANSACTION, transactionModel.toMap());
+  }
+
+  static Future<List<TransactionModel>> getAllTransactionsList(int id) async {
+    final db = await open();
+    final tMapList = await db.query(TABLE_TRANSACTION, where: '$T_TRANS_COLS_U_ID = ?', whereArgs:  [id]);
+
+    return List.generate(tMapList.length, (index) => TransactionModel.fromMap(tMapList[index]));
   }
 }

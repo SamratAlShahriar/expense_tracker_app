@@ -1,3 +1,4 @@
+import 'package:expense_tracker_app/themes/colors.dart';
 import 'package:flutter/material.dart';
 
 ThemeData pocketTheme = _buildThemeLight();
@@ -5,7 +6,8 @@ ThemeData pocketTheme = _buildThemeLight();
 ThemeData _buildThemeLight() {
   final ThemeData base = ThemeData.light();
   return base.copyWith(
-    colorScheme: base.colorScheme.copyWith(),
+    colorScheme: base.colorScheme.copyWith(
+    ),
     textTheme: _buildTextTheme(base.textTheme),
   );
 }

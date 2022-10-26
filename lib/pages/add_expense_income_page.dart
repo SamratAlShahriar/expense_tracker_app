@@ -1,3 +1,4 @@
+import 'package:expense_tracker_app/constants/const_strings.dart';
 import 'package:expense_tracker_app/constants/constants_values1.dart';
 import 'package:expense_tracker_app/model/transaction_model.dart';
 import 'package:expense_tracker_app/providers/transaction_provider.dart';
@@ -70,7 +71,7 @@ class _AddIncomeOrExpensePageState extends State<AddIncomeOrExpensePage> {
                       child: Icon(
                         Icons.type_specimen_outlined,
                         color: Colors.white,
-                        size: 40,
+                        size: 30,
                       ),
                     ),
                     SizedBox(
@@ -79,20 +80,20 @@ class _AddIncomeOrExpensePageState extends State<AddIncomeOrExpensePage> {
                     ChoiceChip(
                       elevation: 1,
                       label: Text(
-                        'Income',
+                        TYPE_INCOME,
                         style: TextStyle(
-                          fontSize: 20,
-                          color: selectionType == 'Income'
+                          fontSize: 16.0,
+                          color: selectionType == TYPE_INCOME
                               ? Colors.white
                               : Colors.grey,
                         ),
                       ),
-                      selected: selectionType == 'Income' ? true : false,
+                      selected: selectionType == TYPE_INCOME ? true : false,
                       backgroundColor: Colors.white70,
                       selectedColor: Colors.green,
                       onSelected: (value) {
                         setState(() {
-                          selectionType = 'Income';
+                          selectionType = TYPE_INCOME;
                         });
                       },
                     ),
@@ -102,21 +103,20 @@ class _AddIncomeOrExpensePageState extends State<AddIncomeOrExpensePage> {
                     ChoiceChip(
                       elevation: 1,
                       label: Text(
-                        'Expense',
+                        TYPE_EXPENSE,
                         style: TextStyle(
-                          fontSize: 20,
-                          fontFamily: 'Poppins',
-                          color: selectionType == 'Expense'
+                          fontSize: 16.0,
+                          color: selectionType == TYPE_EXPENSE
                               ? Colors.white
                               : Colors.grey,
                         ),
                       ),
-                      selected: selectionType == 'Expense' ? true : false,
+                      selected: selectionType == TYPE_EXPENSE ? true : false,
                       backgroundColor: Colors.white70,
                       selectedColor: Colors.red,
                       onSelected: (value) {
                         setState(() {
-                          selectionType = 'Expense';
+                          selectionType = TYPE_EXPENSE;
                         });
                       },
                     ),
@@ -148,7 +148,7 @@ class _AddIncomeOrExpensePageState extends State<AddIncomeOrExpensePage> {
                             child: Icon(
                               Icons.monetization_on_outlined,
                               color: Colors.white,
-                              size: 40,
+                              size: 30,
                             ),
                           ),
                           SizedBox(
@@ -192,7 +192,7 @@ class _AddIncomeOrExpensePageState extends State<AddIncomeOrExpensePage> {
                             child: Icon(
                               Icons.note_alt_outlined,
                               color: Colors.white,
-                              size: 40,
+                              size: 30,
                             ),
                           ),
                           SizedBox(
@@ -232,7 +232,7 @@ class _AddIncomeOrExpensePageState extends State<AddIncomeOrExpensePage> {
                             child: Icon(
                               Icons.calendar_month_outlined,
                               color: Colors.white,
-                              size: 40,
+                              size: 30,
                             ),
                           ),
                           SizedBox(
@@ -255,7 +255,7 @@ class _AddIncomeOrExpensePageState extends State<AddIncomeOrExpensePage> {
                     SizedBox(
                       height: 8,
                     ),
-                    selectionType == 'Expense'
+                    selectionType == TYPE_EXPENSE
                         ? Container(
                             decoration: BoxDecoration(
                               shape: BoxShape.rectangle,
@@ -275,7 +275,7 @@ class _AddIncomeOrExpensePageState extends State<AddIncomeOrExpensePage> {
                                   child: Icon(
                                     Icons.category_outlined,
                                     color: Colors.white,
-                                    size: 40,
+                                    size: 30,
                                   ),
                                 ),
                                 SizedBox(
@@ -299,6 +299,9 @@ class _AddIncomeOrExpensePageState extends State<AddIncomeOrExpensePage> {
                                     },
                                   ),
                                 ),
+                                if (selectedCategory == 'Add Category')
+                                  TextButton(
+                                      onPressed: () {}, child: Icon(Icons.add))
                               ],
                             ),
                           )
@@ -361,14 +364,14 @@ class _AddIncomeOrExpensePageState extends State<AddIncomeOrExpensePage> {
       return;
     }
     var model = TransactionModel(
+        userId: 1,
         transactionType: selectionType,
         amount: double.parse(amountController.text),
         note: noteController.text,
-        expenseCategory: selectionType == 'Expense' ? selectedCategory : null,
+        expenseCategory: selectionType == TYPE_EXPENSE ? selectedCategory : null,
         transactionDate: getFormattedDate(selectedDate!, datePattern),
         timestamp: getFormattedDate(DateTime.now(), dateTimePattern));
 
     transactionProvider.insertTransaction(model);
   }
-
 }

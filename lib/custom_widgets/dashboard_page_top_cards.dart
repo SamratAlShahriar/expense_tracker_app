@@ -17,7 +17,7 @@ class DashboardCardGenerator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 10,
+      elevation: 1.0,
       child: Container(
         padding: EdgeInsets.symmetric(
           horizontal: 8.0,
