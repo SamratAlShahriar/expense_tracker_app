@@ -1,6 +1,7 @@
 import 'package:expense_tracker_app/constants/const_strings.dart';
 import 'package:expense_tracker_app/custom_widgets/dashboard_page_button.dart';
 import 'package:expense_tracker_app/custom_widgets/dashboard_page_top_cards.dart';
+import 'package:expense_tracker_app/custom_widgets/history_listview_single_item.dart';
 import 'package:expense_tracker_app/pages/analysis_page.dart';
 import 'package:expense_tracker_app/pages/history_page.dart';
 import 'package:expense_tracker_app/providers/transaction_provider.dart';
@@ -26,7 +27,8 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
-    transactionProvider = Provider.of<TransactionProvider>(context, listen: false);
+    transactionProvider =
+        Provider.of<TransactionProvider>(context, listen: false);
     transactionProvider.getAllTransactionsList(1);
     super.didChangeDependencies();
   }
@@ -40,7 +42,7 @@ class _DashboardPageState extends State<DashboardPage> {
           //top side
           Container(
             decoration: BoxDecoration(
-              color: Color(0xFF020921),
+              color: colorBlueDark,
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(30),
                 bottomRight: Radius.circular(30),
@@ -49,30 +51,41 @@ class _DashboardPageState extends State<DashboardPage> {
             child: Column(
               children: [
                 SizedBox(
-                  height: 8.0,
+                  height: 16  .0,
                 ),
                 //welcome user text
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                    vertical: 4.0,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.circular(50.0),
+                  ),
                   child: Row(
+                    mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        'Balance : ',
-                        style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                          color: Colors.white,
-                        ),
+                      Icon(Icons.account_balance_wallet, color: Color(
+                          0x5f03032F),),
+                      SizedBox(
+                        width: 4.0,
                       ),
                       Text(
                         '15358614.0',
-                        style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                        ),
+                        style:
+                            Theme.of(context).textTheme.titleMedium!.copyWith(
+                                  color: colorBlueDark,
+                                  fontWeight: FontWeight.w600,
+                                ),
                       ),
                     ],
                   ),
                 ),
+
+                SizedBox(height: 16.0,),
 
                 //dashboard card for income expense and loan
                 SizedBox(
@@ -179,29 +192,18 @@ class _DashboardPageState extends State<DashboardPage> {
                     child: FutureBuilder<List<TransactionModel>>(
                       future: transactionProvider.getAllTransactionsList(1),
                       builder: (context, snapshot) {
-                        if(snapshot.hasData){
+                        if (snapshot.hasData) {
                           return ListView.builder(
-                            itemCount: transactionProvider.transactionList.length,
+                            itemCount:
+                                transactionProvider.transactionList.length,
                             itemBuilder: (context, index) {
-                              final tModel = transactionProvider.transactionList[index];
-                              return Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 2.0),
-                                child: ListTile(
-                                  tileColor: _getTitleColorOnType(tModel.transactionType),
-                                  leading: _getIconBasedOnType(tModel.transactionType),
-                                  title: Text(tModel.note),
-                                  subtitle: Text(tModel.transactionDate),
-                                  trailing: Text(tModel.amount.toString()),
-                                ),
-                              );
+                              final tModel =
+                                  transactionProvider.transactionList[index];
+                              return HistoryListSingleItem(tModel: tModel);
                             },
                           );
-                        } else if(snapshot.hasError){
-
-                        }
-                        return Center(child: CircularProgressIndicator(
-
-                        ));
+                        } else if (snapshot.hasError) {}
+                        return Center(child: CircularProgressIndicator());
                       },
                     ),
                   ),
@@ -212,34 +214,5 @@ class _DashboardPageState extends State<DashboardPage> {
         ],
       ),
     );
-  }
-
-  Widget _getIconBasedOnType(String type) {
-    switch (type) {
-      case TYPE_EXPENSE:
-        return CircleAvatar(backgroundColor: Colors.red,
-            foregroundColor: Colors.white,
-            child: Icon(Icons.arrow_downward,));
-      case TYPE_INCOME:
-        return CircleAvatar(backgroundColor: Colors.green,
-            foregroundColor: Colors.white,
-            child: Icon(Icons.arrow_upward,));
-      default:
-        return CircleAvatar(
-            backgroundColor: Colors.yellow,
-            foregroundColor: Colors.white,
-            child: Icon(Icons.call_missed,));
-    }
-  }
-
-  Color _getTitleColorOnType(String type) {
-    switch (type) {
-      case TYPE_EXPENSE:
-        return colorRedHevvyLight;
-      case TYPE_INCOME:
-        return colorGreenHevvyLight;
-      default:
-        return colorYellowHevvyLight;
-    }
   }
 }

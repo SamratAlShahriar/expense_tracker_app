@@ -1,4 +1,5 @@
 import 'package:expense_tracker_app/constants/const_strings.dart';
+import 'package:expense_tracker_app/custom_widgets/history_listview_single_item.dart';
 import 'package:expense_tracker_app/model/transaction_model.dart';
 import 'package:expense_tracker_app/providers/transaction_provider.dart';
 import 'package:expense_tracker_app/themes/colors.dart';
@@ -38,16 +39,7 @@ class _HistoryPageState extends State<HistoryPage> {
                 itemCount: transactionProvider.transactionList.length,
                 itemBuilder: (context, index) {
                   final tModel = transactionProvider.transactionList[index];
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 2.0),
-                    child: ListTile(
-                      tileColor: _getTitleColorOnType(tModel.transactionType),
-                      leading: _getIconBasedOnType(tModel.transactionType),
-                      title: Text(tModel.note),
-                      subtitle: Text(tModel.transactionDate),
-                      trailing: Text(tModel.amount.toString()),
-                    ),
-                  );
+                  return HistoryListSingleItem(tModel: tModel);
                 },
               );
             } else if(snapshot.hasError){
@@ -62,32 +54,5 @@ class _HistoryPageState extends State<HistoryPage> {
     );
   }
 
-  Widget _getIconBasedOnType(String type) {
-    switch (type) {
-      case TYPE_EXPENSE:
-        return CircleAvatar(backgroundColor: Colors.red,
-            foregroundColor: Colors.white,
-            child: Icon(Icons.arrow_downward,));
-      case TYPE_INCOME:
-        return CircleAvatar(backgroundColor: Colors.green,
-            foregroundColor: Colors.white,
-            child: Icon(Icons.arrow_upward,));
-      default:
-        return CircleAvatar(
-            backgroundColor: Colors.yellow,
-            foregroundColor: Colors.white,
-            child: Icon(Icons.call_missed,));
-    }
-  }
 
-  Color _getTitleColorOnType(String type) {
-    switch (type) {
-      case TYPE_EXPENSE:
-        return colorRedHevvyLight;
-      case TYPE_INCOME:
-        return colorGreenHevvyLight;
-      default:
-        return colorYellowHevvyLight;
-    }
-  }
 }

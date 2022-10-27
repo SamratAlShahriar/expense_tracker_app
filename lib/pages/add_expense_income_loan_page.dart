@@ -7,16 +7,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-class AddIncomeOrExpensePage extends StatefulWidget {
-  static const String routeName = '/add_income_expense_page';
+class AddIncomeOrExpenseOrLoanPage extends StatefulWidget {
+  static const String routeName = '/add_income_expense_loan_page';
 
-  const AddIncomeOrExpensePage({Key? key}) : super(key: key);
+  const AddIncomeOrExpenseOrLoanPage({Key? key}) : super(key: key);
 
   @override
-  State<AddIncomeOrExpensePage> createState() => _AddIncomeOrExpensePageState();
+  State<AddIncomeOrExpenseOrLoanPage> createState() => _AddIncomeOrExpenseOrLoanPageState();
 }
 
-class _AddIncomeOrExpensePageState extends State<AddIncomeOrExpensePage> {
+class _AddIncomeOrExpenseOrLoanPageState extends State<AddIncomeOrExpenseOrLoanPage> {
   late TransactionProvider transactionProvider;
   String selectionType = "Income";
   DateTime? selectedDate;
@@ -46,7 +46,9 @@ class _AddIncomeOrExpensePageState extends State<AddIncomeOrExpensePage> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          title: Text('Add Income Or Expense'),
+          title: Text('Add $selectionType', style: TextStyle(
+            fontSize: 14.0,
+          ),),
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(
@@ -75,7 +77,7 @@ class _AddIncomeOrExpensePageState extends State<AddIncomeOrExpensePage> {
                       ),
                     ),
                     SizedBox(
-                      width: 8,
+                      width: 4.0,
                     ),
                     ChoiceChip(
                       elevation: 1,
@@ -98,7 +100,7 @@ class _AddIncomeOrExpensePageState extends State<AddIncomeOrExpensePage> {
                       },
                     ),
                     SizedBox(
-                      width: 8.0,
+                      width: 4.0,
                     ),
                     ChoiceChip(
                       elevation: 1,
@@ -117,6 +119,30 @@ class _AddIncomeOrExpensePageState extends State<AddIncomeOrExpensePage> {
                       onSelected: (value) {
                         setState(() {
                           selectionType = TYPE_EXPENSE;
+                        });
+                      },
+                    ),
+
+                    SizedBox(
+                      width: 4.0,
+                    ),
+                    ChoiceChip(
+                      elevation: 1,
+                      label: Text(
+                        TYPE_LOAN,
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          color: selectionType == TYPE_LOAN
+                              ? Colors.white
+                              : Colors.grey,
+                        ),
+                      ),
+                      selected: selectionType == TYPE_LOAN ? true : false,
+                      backgroundColor: Colors.white70,
+                      selectedColor: Colors.orange,
+                      onSelected: (value) {
+                        setState(() {
+                          selectionType = TYPE_LOAN;
                         });
                       },
                     ),

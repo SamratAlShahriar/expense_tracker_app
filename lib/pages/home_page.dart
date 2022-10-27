@@ -2,7 +2,7 @@ import 'package:expense_tracker_app/pages/dashboard_page.dart';
 import 'package:expense_tracker_app/pages/history_page.dart';
 import 'package:flutter/material.dart';
 
-import 'add_expense_income_page.dart';
+import 'add_expense_income_loan_page.dart';
 
 class Homepage extends StatefulWidget {
   static const String routeName = '/home_page';
@@ -28,7 +28,7 @@ class _HomepageState extends State<Homepage> {
           child: Icon(Icons.add),
           isExtended: true,
           onPressed: () {
-            Navigator.pushNamed(context, AddIncomeOrExpensePage.routeName);
+            Navigator.pushNamed(context, AddIncomeOrExpenseOrLoanPage.routeName);
           },
         ),
         bottomNavigationBar: BottomNavigationBar(

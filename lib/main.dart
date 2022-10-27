@@ -1,4 +1,4 @@
-import 'package:expense_tracker_app/pages/add_expense_income_page.dart';
+import 'package:expense_tracker_app/pages/add_expense_income_loan_page.dart';
 import 'package:expense_tracker_app/pages/analysis_page.dart';
 import 'package:expense_tracker_app/pages/dashboard_page.dart';
 import 'package:expense_tracker_app/pages/history_page.dart';
@@ -33,8 +33,8 @@ class _MyPocketState extends State<MyPocket> {
         routes: {
           Homepage.routeName: (context) => Homepage(),
           DashboardPage.routeName: (context) => DashboardPage(),
-          AddIncomeOrExpensePage.routeName: (context) =>
-              AddIncomeOrExpensePage(),
+          AddIncomeOrExpenseOrLoanPage.routeName: (context) =>
+              AddIncomeOrExpenseOrLoanPage(),
           AnalysisPage.routeName: (context) => AnalysisPage(),
           LoanPage.routeName: (context) => LoanPage(),
           HistoryPage.routeName: (context) => HistoryPage(),
