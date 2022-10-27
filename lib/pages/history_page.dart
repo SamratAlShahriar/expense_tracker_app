@@ -1,6 +1,7 @@
 import 'package:expense_tracker_app/constants/const_strings.dart';
 import 'package:expense_tracker_app/model/transaction_model.dart';
 import 'package:expense_tracker_app/providers/transaction_provider.dart';
+import 'package:expense_tracker_app/themes/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -37,11 +38,15 @@ class _HistoryPageState extends State<HistoryPage> {
                 itemCount: transactionProvider.transactionList.length,
                 itemBuilder: (context, index) {
                   final tModel = transactionProvider.transactionList[index];
-                  return ListTile(
-                    leading: _getIconBasedOnType(tModel.transactionType),
-                    title: Text(tModel.note),
-                    subtitle: Text(tModel.transactionDate),
-                    trailing: Text(tModel.amount.toString()),
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 2.0),
+                    child: ListTile(
+                      tileColor: _getTitleColorOnType(tModel.transactionType),
+                      leading: _getIconBasedOnType(tModel.transactionType),
+                      title: Text(tModel.note),
+                      subtitle: Text(tModel.transactionDate),
+                      trailing: Text(tModel.amount.toString()),
+                    ),
                   );
                 },
               );
@@ -72,6 +77,17 @@ class _HistoryPageState extends State<HistoryPage> {
             backgroundColor: Colors.yellow,
             foregroundColor: Colors.white,
             child: Icon(Icons.call_missed,));
+    }
+  }
+
+  Color _getTitleColorOnType(String type) {
+    switch (type) {
+      case TYPE_EXPENSE:
+        return colorRedHevvyLight;
+      case TYPE_INCOME:
+        return colorGreenHevvyLight;
+      default:
+        return colorYellowHevvyLight;
     }
   }
 }

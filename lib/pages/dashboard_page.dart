@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../model/transaction_model.dart';
+import '../themes/colors.dart';
 import 'loan_page.dart';
 
 class DashboardPage extends StatefulWidget {
@@ -183,11 +184,15 @@ class _DashboardPageState extends State<DashboardPage> {
                             itemCount: transactionProvider.transactionList.length,
                             itemBuilder: (context, index) {
                               final tModel = transactionProvider.transactionList[index];
-                              return ListTile(
-                                leading: _getIconBasedOnType(tModel.transactionType),
-                                title: Text(tModel.note),
-                                subtitle: Text(tModel.transactionDate),
-                                trailing: Text(tModel.amount.toString()),
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 2.0),
+                                child: ListTile(
+                                  tileColor: _getTitleColorOnType(tModel.transactionType),
+                                  leading: _getIconBasedOnType(tModel.transactionType),
+                                  title: Text(tModel.note),
+                                  subtitle: Text(tModel.transactionDate),
+                                  trailing: Text(tModel.amount.toString()),
+                                ),
                               );
                             },
                           );
@@ -224,6 +229,17 @@ class _DashboardPageState extends State<DashboardPage> {
             backgroundColor: Colors.yellow,
             foregroundColor: Colors.white,
             child: Icon(Icons.call_missed,));
+    }
+  }
+
+  Color _getTitleColorOnType(String type) {
+    switch (type) {
+      case TYPE_EXPENSE:
+        return colorRedHevvyLight;
+      case TYPE_INCOME:
+        return colorGreenHevvyLight;
+      default:
+        return colorYellowHevvyLight;
     }
   }
 }
