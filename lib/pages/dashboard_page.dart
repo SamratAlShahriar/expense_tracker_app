@@ -39,7 +39,7 @@ class _DashboardPageState extends State<DashboardPage> {
           //top side
           Container(
             decoration: BoxDecoration(
-              color: Color(0xFF0197C5),
+              color: Color(0xFF0C0526),
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(30),
                 bottomRight: Radius.circular(30),
@@ -54,14 +54,20 @@ class _DashboardPageState extends State<DashboardPage> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Welcome, ',
-                        style: Theme.of(context).textTheme.titleMedium,
+                        'Balance : ',
+                        style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                          color: Colors.white,
+                        ),
                       ),
                       Text(
-                        'Samrat Al Shahriar',
-                        style: Theme.of(context).textTheme.titleLarge,
+                        '15358614.0',
+                        style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ],
                   ),
@@ -77,7 +83,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         flex: 1,
                         child: DashboardCardGenerator(
                             cardType: 'Income',
-                            iconType: Icons.arrow_downward,
+                            imagePath: 'assets/images/income.png',
                             iconColor: Colors.green,
                             cardAmount: '100999'),
                       ),
@@ -85,7 +91,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         flex: 1,
                         child: DashboardCardGenerator(
                             cardType: 'Expense',
-                            iconType: Icons.arrow_upward,
+                            imagePath: 'assets/images/expense.png',
                             iconColor: Colors.red,
                             cardAmount: '100000'),
                       ),
@@ -93,7 +99,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         flex: 1,
                         child: DashboardCardGenerator(
                             cardType: 'Loan',
-                            iconType: Icons.call_missed,
+                            imagePath: 'assets/images/loan.png',
                             iconColor: Color(0xFFFF9514),
                             cardAmount: '100000'),
                       ),
