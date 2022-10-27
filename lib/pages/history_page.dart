@@ -62,7 +62,7 @@ class _HistoryPageState extends State<HistoryPage> {
       case TYPE_EXPENSE:
         return CircleAvatar(backgroundColor: Colors.red,
             foregroundColor: Colors.white,
-            child: Icon(Icons.arrow_upward,));
+            child: Icon(Icons.arrow_downward,));
       case TYPE_INCOME:
         return CircleAvatar(backgroundColor: Colors.green,
             foregroundColor: Colors.white,

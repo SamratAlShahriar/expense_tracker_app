@@ -39,7 +39,7 @@ class _DashboardPageState extends State<DashboardPage> {
           //top side
           Container(
             decoration: BoxDecoration(
-              color: Color(0xFF0C0526),
+              color: Color(0xFF020921),
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(30),
                 bottomRight: Radius.circular(30),
@@ -214,7 +214,7 @@ class _DashboardPageState extends State<DashboardPage> {
       case TYPE_EXPENSE:
         return CircleAvatar(backgroundColor: Colors.red,
             foregroundColor: Colors.white,
-            child: Icon(Icons.arrow_upward,));
+            child: Icon(Icons.arrow_downward,));
       case TYPE_INCOME:
         return CircleAvatar(backgroundColor: Colors.green,
             foregroundColor: Colors.white,
