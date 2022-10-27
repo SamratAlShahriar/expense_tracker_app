@@ -51,7 +51,7 @@ class _DashboardPageState extends State<DashboardPage> {
             child: Column(
               children: [
                 SizedBox(
-                  height: 16  .0,
+                  height: 16.0,
                 ),
                 //welcome user text
                 Container(
