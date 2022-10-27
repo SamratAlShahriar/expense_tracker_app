@@ -30,6 +30,7 @@ class _DashboardPageState extends State<DashboardPage> {
     transactionProvider =
         Provider.of<TransactionProvider>(context, listen: false);
     transactionProvider.getAllTransactionsList(1);
+
     super.didChangeDependencies();
   }
 
@@ -68,8 +69,10 @@ class _DashboardPageState extends State<DashboardPage> {
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.account_balance_wallet, color: Color(
-                          0x5f03032F),),
+                      Icon(
+                        Icons.account_balance_wallet,
+                        color: Color(0x5f03032F),
+                      ),
                       SizedBox(
                         width: 4.0,
                       ),
@@ -85,7 +88,9 @@ class _DashboardPageState extends State<DashboardPage> {
                   ),
                 ),
 
-                SizedBox(height: 16.0,),
+                SizedBox(
+                  height: 16.0,
+                ),
 
                 //dashboard card for income expense and loan
                 SizedBox(

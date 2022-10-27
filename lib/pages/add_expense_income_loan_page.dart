@@ -13,10 +13,12 @@ class AddIncomeOrExpenseOrLoanPage extends StatefulWidget {
   const AddIncomeOrExpenseOrLoanPage({Key? key}) : super(key: key);
 
   @override
-  State<AddIncomeOrExpenseOrLoanPage> createState() => _AddIncomeOrExpenseOrLoanPageState();
+  State<AddIncomeOrExpenseOrLoanPage> createState() =>
+      _AddIncomeOrExpenseOrLoanPageState();
 }
 
-class _AddIncomeOrExpenseOrLoanPageState extends State<AddIncomeOrExpenseOrLoanPage> {
+class _AddIncomeOrExpenseOrLoanPageState
+    extends State<AddIncomeOrExpenseOrLoanPage> {
   late TransactionProvider transactionProvider;
   String selectionType = "Income";
   DateTime? selectedDate;
@@ -46,9 +48,12 @@ class _AddIncomeOrExpenseOrLoanPageState extends State<AddIncomeOrExpenseOrLoanP
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          title: Text('Add $selectionType', style: TextStyle(
-            fontSize: 14.0,
-          ),),
+          title: Text(
+            'Add $selectionType',
+            style: TextStyle(
+              fontSize: 14.0,
+            ),
+          ),
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(
@@ -122,7 +127,6 @@ class _AddIncomeOrExpenseOrLoanPageState extends State<AddIncomeOrExpenseOrLoanP
                         });
                       },
                     ),
-
                     SizedBox(
                       width: 4.0,
                     ),
@@ -394,9 +398,10 @@ class _AddIncomeOrExpenseOrLoanPageState extends State<AddIncomeOrExpenseOrLoanP
         transactionType: selectionType,
         amount: double.parse(amountController.text),
         note: noteController.text,
-        expenseCategory: selectionType == TYPE_EXPENSE ? selectedCategory : null,
+        expenseCategory:
+            selectionType == TYPE_EXPENSE ? selectedCategory : null,
         transactionDate: getFormattedDate(selectedDate!, datePattern),
-        timestamp: getFormattedDate(DateTime.now(), dateTimePattern));
+        timestamp: DateTime.now().toString());
 
     transactionProvider.insertTransaction(model);
   }

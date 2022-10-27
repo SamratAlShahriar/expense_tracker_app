@@ -14,4 +14,8 @@ class TransactionProvider extends ChangeNotifier{
     notifyListeners();
     return transactionList;
   }
+
+  Future<double> getTypedTotalAmount(int id, String type){
+    return DbHelper.getTypedTotalAmount(id, type);
+  }
 }

@@ -14,16 +14,28 @@ class _LoanPageState extends State<LoanPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Center(
-          child: CircleAvatar(
-            radius: 36.0,
-            backgroundColor: Colors.orange,
-            child: Image.asset(
-              'assets/images/expense.png',
-              height: 36,
-              width: 36,
+        body: Column(
+          children: [
+            Card(
+              child: Row(
+                children: [
+                  Text('Remaining Loan '),
+                  Text('19000000'),
+                ],
+              ),
             ),
-          ),
+            SizedBox(
+              height: 16.0,
+            ),
+            Card(
+              child: Column(
+                children: [
+                  Text('Next premium in'),
+                  Text('6 Days'),
+                ],
+              ),
+            )
+          ],
         ),
       ),
     );

@@ -31,8 +31,17 @@ class DbHelper {
 
   static Future<List<TransactionModel>> getAllTransactionsList(int id) async {
     final db = await open();
-    final tMapList = await db.query(TABLE_TRANSACTION, where: '$T_TRANS_COLS_U_ID = ?', whereArgs:  [id]);
+    final tMapList = await db.query(TABLE_TRANSACTION, where: '$T_TRANS_COLS_U_ID = ?',
+        whereArgs:  [id], orderBy: '$T_TRANS_COL_TIMESTAMP DESC');
 
-    return List.generate(tMapList.length, (index) => TransactionModel.fromMap(tMapList[index]));
+    return List.generate(tMapList.length, (index) =>
+        TransactionModel.fromMap(tMapList[index]));
+  }
+
+  static Future<double> getTypedTotalAmount(int id, String type) async{
+    final db = await open();
+    final sumMap = await db.rawQuery("SELECT SUM($T_TRANS_COL_AMOUNT) AS $type FROM tbl_transaction WHERE u_id = $id AND $T_TRANS_COL_TYPE = '$type' ");
+    final sumObj = sumMap.first;
+    return sumObj[type] as double;
   }
 }

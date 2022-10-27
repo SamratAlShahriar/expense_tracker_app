@@ -31,7 +31,7 @@ class TransactionModel {
 
   Map<String, dynamic> toMap() {
     final map = <String, dynamic>{
-      T_TRANS_COLS_U_ID:userId,
+      T_TRANS_COLS_U_ID: userId,
       T_TRANS_COL_TYPE: transactionType,
       T_TRANS_COL_AMOUNT: amount,
       T_TRANS_COL_NOTE: note,

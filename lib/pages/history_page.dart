@@ -31,24 +31,45 @@ class _HistoryPageState extends State<HistoryPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: FutureBuilder<List<TransactionModel>>(
-          future: transactionProvider.getAllTransactionsList(1),
-          builder: (context, snapshot) {
-            if(snapshot.hasData){
-              return ListView.builder(
-                itemCount: transactionProvider.transactionList.length,
-                itemBuilder: (context, index) {
-                  final tModel = transactionProvider.transactionList[index];
-                  return HistoryListSingleItem(tModel: tModel);
-                },
-              );
-            } else if(snapshot.hasError){
+        body: Column(
+          children: [
+            Card(
+              child: Container(
+                width: double.infinity,
+                padding: EdgeInsets.symmetric(vertical: 8.0),
+                child: Text(
+                  'Recent Transaction History',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                  ),
+                ),
+              ),
+            ),
+            FutureBuilder<List<TransactionModel>>(
+              future: transactionProvider.getAllTransactionsList(1),
+              builder: (context, snapshot) {
+                if(snapshot.hasData){
+                  return Expanded(
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: ScrollPhysics(),
+                      scrollDirection: Axis.vertical,
+                      itemCount: transactionProvider.transactionList.length,
+                      itemBuilder: (context, index) {
+                        final tModel = transactionProvider.transactionList[index];
+                        return HistoryListSingleItem(tModel: tModel);
+                      },
+                    ),
+                  );
+                } else if(snapshot.hasError){
 
-            }
-            return Center(child: CircularProgressIndicator(
+                }
+                return Center(child: CircularProgressIndicator(
 
-            ));
-          },
+                ));
+              },
+            ),
+          ],
         ),
       ),
     );
