@@ -8,13 +8,10 @@ class DashboardCardGenerator extends StatelessWidget {
   String cardType;
   String imagePath;
   Color iconColor;
-  String cardAmount;
-
   DashboardCardGenerator(
       {required this.cardType,
       required this.imagePath,
       required this.iconColor,
-      required this.cardAmount,
       Key? key})
       : super(key: key);
 
@@ -60,7 +57,11 @@ class DashboardCardGenerator extends StatelessWidget {
                     ),
                   );
                 }
-                if (snapshot.hasError) {}
+                if (snapshot.hasError) {
+                  return Text('0', style: TextStyle(
+                    color: iconColor,
+                  ),);
+                }
                 return CircularProgressIndicator();
               },
             ),

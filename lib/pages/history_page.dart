@@ -45,29 +45,34 @@ class _HistoryPageState extends State<HistoryPage> {
                 ),
               ),
             ),
-            FutureBuilder<List<TransactionModel>>(
-              future: transactionProvider.getAllTransactionsList(1),
-              builder: (context, snapshot) {
-                if(snapshot.hasData){
-                  return Expanded(
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      physics: ScrollPhysics(),
-                      scrollDirection: Axis.vertical,
-                      itemCount: transactionProvider.transactionList.length,
-                      itemBuilder: (context, index) {
-                        final tModel = transactionProvider.transactionList[index];
-                        return HistoryListSingleItem(tModel: tModel);
-                      },
-                    ),
-                  );
-                } else if(snapshot.hasError){
+            Expanded(
+              child: FutureBuilder<List<TransactionModel>>(
+                future: transactionProvider.getAllTransactionsList(1),
+                builder: (context, snapshot) {
+                  if(snapshot.hasData){
+                    if(transactionProvider.transactionList.length < 1){
+                      return Center(child: Image.asset('assets/images/no_data.jpg', width: MediaQuery.of(context).size.width * 0.8,));
+                    }
+                    return Expanded(
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        physics: ScrollPhysics(),
+                        scrollDirection: Axis.vertical,
+                        itemCount: transactionProvider.transactionList.length,
+                        itemBuilder: (context, index) {
+                          final tModel = transactionProvider.transactionList[index];
+                          return HistoryListSingleItem(tModel: tModel);
+                        },
+                      ),
+                    );
+                  } else if(snapshot.hasError){
+                    Image.asset('assets/images/no_data.jpg');
+                  }
+                  return Center(child: CircularProgressIndicator(
 
-                }
-                return Center(child: CircularProgressIndicator(
-
-                ));
-              },
+                  ));
+                },
+              ),
             ),
           ],
         ),

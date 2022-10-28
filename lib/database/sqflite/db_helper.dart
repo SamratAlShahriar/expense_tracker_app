@@ -1,3 +1,5 @@
+import 'package:expense_tracker_app/constants/const_strings.dart';
+import 'package:expense_tracker_app/model/category_wise_expense_model.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../../model/transaction_model.dart';
@@ -24,24 +26,37 @@ class DbHelper {
     }, onUpgrade: (db, oldVersion, newVersion) async {});
   }
 
-  static Future<int> insertTransaction(TransactionModel transactionModel) async {
+  static Future<int> insertTransaction(
+      TransactionModel transactionModel) async {
     final db = await open();
     return db.insert(TABLE_TRANSACTION, transactionModel.toMap());
   }
 
   static Future<List<TransactionModel>> getAllTransactionsList(int id) async {
     final db = await open();
-    final tMapList = await db.query(TABLE_TRANSACTION, where: '$T_TRANS_COLS_U_ID = ?',
-        whereArgs:  [id], orderBy: '$T_TRANS_COL_TIMESTAMP DESC');
+    final tMapList = await db.query(TABLE_TRANSACTION,
+        where: '$T_TRANS_COLS_U_ID = ?',
+        whereArgs: [id],
+        orderBy: '$T_TRANS_COL_TIMESTAMP DESC');
 
-    return List.generate(tMapList.length, (index) =>
-        TransactionModel.fromMap(tMapList[index]));
+    return List.generate(
+        tMapList.length, (index) => TransactionModel.fromMap(tMapList[index]));
   }
 
-  static Future<double> getTypedTotalAmount(int id, String type) async{
+  static Future<double> getTypedTotalAmount(int id, String type) async {
     final db = await open();
-    final sumMap = await db.rawQuery("SELECT SUM($T_TRANS_COL_AMOUNT) AS $type FROM tbl_transaction WHERE u_id = $id AND $T_TRANS_COL_TYPE = '$type' ");
+    final sumMap = await db.rawQuery(
+        "SELECT SUM($T_TRANS_COL_AMOUNT) AS $type FROM tbl_transaction WHERE u_id = $id AND $T_TRANS_COL_TYPE = '$type' ");
     final sumObj = sumMap.first;
     return sumObj[type] as double;
+  }
+
+  static Future<List<CategoryWiseExpenseModel>> getCategoryWiseExpenseList(
+      int id) async {
+    final db = await open();
+    final categorySumMap = await db.rawQuery(
+        "SELECT SUM($T_TRANS_COL_AMOUNT) AS $T_COL_CATEGORY_SUM, $T_TRANS_COL_E_CATEG FROM $TABLE_TRANSACTION WHERE $T_TRANS_COL_TYPE = '$TYPE_EXPENSE' AND $T_TRANS_COLS_U_ID = $id GROUP BY $T_TRANS_COL_E_CATEG ORDER BY $T_COL_CATEGORY_SUM LIMIT 5");
+    return List.generate(categorySumMap.length,
+        (index) => CategoryWiseExpenseModel.fromMap(categorySumMap[index]));
   }
 }

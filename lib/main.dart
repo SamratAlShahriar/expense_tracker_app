@@ -32,7 +32,7 @@ class _MyPocketState extends State<MyPocket> {
         theme: pocketTheme,
         routes: {
           Homepage.routeName: (context) => Homepage(),
-          DashboardPage.routeName: (context) => DashboardPage(),
+         // DashboardPage.routeName: (context) => DashboardPage(),
           AddIncomeOrExpenseOrLoanPage.routeName: (context) =>
               AddIncomeOrExpenseOrLoanPage(),
           AnalysisPage.routeName: (context) => AnalysisPage(),

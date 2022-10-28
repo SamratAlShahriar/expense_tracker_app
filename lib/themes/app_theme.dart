@@ -7,6 +7,8 @@ ThemeData _buildThemeLight() {
   final ThemeData base = ThemeData.light();
   return base.copyWith(
     colorScheme: base.colorScheme.copyWith(
+      secondary: colorBlueDark,
+      primary: colorBlueDark,
     ),
     textTheme: _buildTextTheme(base.textTheme),
   );

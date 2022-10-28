@@ -1,5 +1,11 @@
-import 'package:fl_chart/fl_chart.dart';
+import 'dart:math';
+
+import 'package:expense_tracker_app/providers/transaction_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:pie_chart/pie_chart.dart';
+
+import '../themes/colors.dart';
 
 class AnalysisPage extends StatefulWidget {
   static const String routeName = '/analysis_page';
@@ -11,466 +17,102 @@ class AnalysisPage extends StatefulWidget {
 }
 
 class _AnalysisPageState extends State<AnalysisPage> {
-  int touchedIndex = -1;
+  late TransactionProvider transactionProvider;
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    transactionProvider =
+        Provider.of<TransactionProvider>(context, listen: false);
+    transactionProvider.getCategoryWiseExpenseList(1);
+
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        extendBodyBehindAppBar: true,
         appBar: AppBar(
-          backgroundColor: Color(0x5f000000),
-          elevation: 1,
-          leading: Icon(Icons.dataset_outlined, color: Colors.blue,),
-          actions: [
-            CircleAvatar(
-              child: Icon(Icons.person),
-            )
-          ],
+          leading: Icon(
+            Icons.analytics,
+            color: Colors.blue,
+          ),
+          title: Text('Analysis', ),
         ),
-        body: ListView(
+        body: Column(
           children: [
-            Card(
-              elevation: 50,
-              child: Column(
-                children: <Widget>[
-                  AspectRatio(
-                    aspectRatio: 1,
-                    child: PieChart(
-                      PieChartData(
-                        pieTouchData: PieTouchData(
-                          touchCallback:
-                              (FlTouchEvent event, pieTouchResponse) {
-                            setState(() {
-                              if (!event.isInterestedForInteractions ||
-                                  pieTouchResponse == null ||
-                                  pieTouchResponse.touchedSection == null) {
-                                touchedIndex = -1;
-                                return;
-                              }
-                              touchedIndex = pieTouchResponse
-                                  .touchedSection!.touchedSectionIndex;
-                            });
-                          },
-                        ),
-                        borderData: FlBorderData(
-                          show: false,
-                        ),
-                        sectionsSpace: 0,
-                        centerSpaceRadius: 40,
-                        sections: showingSections(),
-                      ),
-                    ),
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: const <Widget>[
-                      Indicator(
-                        color: Color(0xff0293ee),
-                        text: 'First',
-                        isSquare: true,
-                      ),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      Indicator(
-                        color: Color(0xfff8b250),
-                        text: 'Second',
-                        isSquare: true,
-                      ),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      Indicator(
-                        color: Color(0xff845bef),
-                        text: 'Third',
-                        isSquare: true,
-                      ),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      Indicator(
-                        color: Color(0xff13d38e),
-                        text: 'Fourth',
-                        isSquare: true,
-                      ),
-                      SizedBox(
-                        height: 18,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    width: 28,
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      ScaffoldMessenger.of(context)
-                          .showSnackBar(SnackBar(content: Text('ok')));
-                    },
-                    child: Text('click'),
-                  ),
-                ],
-              ),
+            Row(
+              children: [
+                Text('Show Expnses by category'),
+              ],
             ),
-            Card(
-              elevation: 50,
-              child: Column(
-                children: <Widget>[
-                  AspectRatio(
-                    aspectRatio: 1,
-                    child: PieChart(
-                      PieChartData(
-                        pieTouchData: PieTouchData(
-                          touchCallback:
-                              (FlTouchEvent event, pieTouchResponse) {
-                            setState(() {
-                              if (!event.isInterestedForInteractions ||
-                                  pieTouchResponse == null ||
-                                  pieTouchResponse.touchedSection == null) {
-                                touchedIndex = -1;
-                                return;
-                              }
-                              touchedIndex = pieTouchResponse
-                                  .touchedSection!.touchedSectionIndex;
-                            });
-                          },
-                        ),
-                        borderData: FlBorderData(
-                          show: false,
-                        ),
-                        sectionsSpace: 0,
-                        centerSpaceRadius: 40,
-                        sections: showingSections(),
-                      ),
-                    ),
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: const <Widget>[
-                      Indicator(
-                        color: Color(0xff0293ee),
-                        text: 'First',
-                        isSquare: true,
-                      ),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      Indicator(
-                        color: Color(0xfff8b250),
-                        text: 'Second',
-                        isSquare: true,
-                      ),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      Indicator(
-                        color: Color(0xff845bef),
-                        text: 'Third',
-                        isSquare: true,
-                      ),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      Indicator(
-                        color: Color(0xff13d38e),
-                        text: 'Fourth',
-                        isSquare: true,
-                      ),
-                      SizedBox(
-                        height: 18,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    width: 28,
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      ScaffoldMessenger.of(context)
-                          .showSnackBar(SnackBar(content: Text('ok')));
-                    },
-                    child: Text('click'),
-                  ),
-                ],
-              ),
-            ),
-            Card(
-              elevation: 50,
-              child: Column(
-                children: <Widget>[
-                  AspectRatio(
-                    aspectRatio: 1,
-                    child: PieChart(
-                      PieChartData(
-                        pieTouchData: PieTouchData(
-                          touchCallback:
-                              (FlTouchEvent event, pieTouchResponse) {
-                            setState(() {
-                              if (!event.isInterestedForInteractions ||
-                                  pieTouchResponse == null ||
-                                  pieTouchResponse.touchedSection == null) {
-                                touchedIndex = -1;
-                                return;
-                              }
-                              touchedIndex = pieTouchResponse
-                                  .touchedSection!.touchedSectionIndex;
-                            });
-                          },
-                        ),
-                        borderData: FlBorderData(
-                          show: false,
-                        ),
-                        sectionsSpace: 0,
-                        centerSpaceRadius: 40,
-                        sections: showingSections(),
-                      ),
-                    ),
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: const <Widget>[
-                      Indicator(
-                        color: Color(0xff0293ee),
-                        text: 'First',
-                        isSquare: true,
-                      ),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      Indicator(
-                        color: Color(0xfff8b250),
-                        text: 'Second',
-                        isSquare: true,
-                      ),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      Indicator(
-                        color: Color(0xff845bef),
-                        text: 'Third',
-                        isSquare: true,
-                      ),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      Indicator(
-                        color: Color(0xff13d38e),
-                        text: 'Fourth',
-                        isSquare: true,
-                      ),
-                      SizedBox(
-                        height: 18,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    width: 28,
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      ScaffoldMessenger.of(context)
-                          .showSnackBar(SnackBar(content: Text('ok')));
-                    },
-                    child: Text('click'),
-                  ),
-                ],
-              ),
-            ),
-            Card(
-              elevation: 50,
-              child: Column(
-                children: <Widget>[
-                  AspectRatio(
-                    aspectRatio: 1,
-                    child: PieChart(
-                      PieChartData(
-                        pieTouchData: PieTouchData(
-                          touchCallback:
-                              (FlTouchEvent event, pieTouchResponse) {
-                            setState(() {
-                              if (!event.isInterestedForInteractions ||
-                                  pieTouchResponse == null ||
-                                  pieTouchResponse.touchedSection == null) {
-                                touchedIndex = -1;
-                                return;
-                              }
-                              touchedIndex = pieTouchResponse
-                                  .touchedSection!.touchedSectionIndex;
-                            });
-                          },
-                        ),
-                        borderData: FlBorderData(
-                          show: false,
-                        ),
-                        sectionsSpace: 0,
-                        centerSpaceRadius: 40,
-                        sections: showingSections(),
-                      ),
-                    ),
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: const <Widget>[
-                      Indicator(
-                        color: Color(0xff0293ee),
-                        text: 'First',
-                        isSquare: true,
-                      ),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      Indicator(
-                        color: Color(0xfff8b250),
-                        text: 'Second',
-                        isSquare: true,
-                      ),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      Indicator(
-                        color: Color(0xff845bef),
-                        text: 'Third',
-                        isSquare: true,
-                      ),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      Indicator(
-                        color: Color(0xff13d38e),
-                        text: 'Fourth',
-                        isSquare: true,
-                      ),
-                      SizedBox(
-                        height: 18,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    width: 28,
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      ScaffoldMessenger.of(context)
-                          .showSnackBar(SnackBar(content: Text('ok')));
-                    },
-                    child: Text('click'),
-                  ),
-                ],
-              ),
-            ),
+            SizedBox(height: 100,),
+            FutureBuilder(
+              future: transactionProvider.getCategoryWiseExpenseList(1),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  final mData = transactionProvider.categoryWiseExpenseList;
+                  Map<String, double> dataMap = <String, double>{};
+                  mData.forEach((element) {
+                    dataMap.addAll({element.category: element.categorySum});
+                  });
 
+                  return dataMap == null || dataMap.isEmpty ? Column(
+                    children: [
+                      Text('NO DATA TO SHOW'),
+                      Image.asset('assets/images/no_analysis.jpg'),
+                    ],
+                  ) : Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: colorBlueLight,
+                        border: Border.all(width: 1, color: colorBlueDark),
+                      ),
+                      padding: EdgeInsets.symmetric(vertical: 36.0,),
+                      child: AspectRatio(
+                        aspectRatio: 16 / 9,
+                        child: PieChart(
+                          dataMap: dataMap,
+                          animationDuration: Duration(milliseconds: 800),
+                          chartLegendSpacing: 32,
+                          chartRadius: MediaQuery.of(context).size.width / 3.2,
+                          colorList: colorList,
+                          initialAngleInDegree: 0,
+                          chartType: ChartType.ring,
+                          ringStrokeWidth: 32,
+                          centerText: "EXPENSE",
+                          legendOptions: LegendOptions(
+                            showLegendsInRow: false,
+                            legendPosition: LegendPosition.right,
+                            showLegends: true,
+                            legendShape: BoxShape.circle,
+                            legendTextStyle: TextStyle(
+                              fontSize: 10,
+                            ),
+                          ),
+                          chartValuesOptions: ChartValuesOptions(
+                            showChartValueBackground: true,
+                            showChartValues: true,
+                            showChartValuesInPercentage: true,
+                            showChartValuesOutside: true,
+                            decimalPlaces: 0,
+                          ),
+                          // gradientList: ---To add gradient colors---
+                          // emptyColorGradient: ---Empty Color gradient---
+                        ),
+                      ),
+                    ),
+                  );
+                }
+
+                return CircularProgressIndicator();
+              },
+            ),
           ],
         ),
       ),
-    );
-  }
-
-  List<PieChartSectionData> showingSections() {
-    return List.generate(4, (i) {
-      final isTouched = i == touchedIndex;
-      print("touched : $isTouched");
-      final fontSize = isTouched ? 25.0 : 16.0;
-      final radius = isTouched ? 60.0 : 50.0;
-      switch (i) {
-        case 0:
-          return PieChartSectionData(
-            color: const Color(0xff0293ee),
-            value: 40,
-            title: '40%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: const Color(0xffffffff),
-            ),
-          );
-        case 1:
-          return PieChartSectionData(
-            color: const Color(0xfff8b250),
-            value: 30,
-            title: '30%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: const Color(0xffffffff),
-            ),
-          );
-        case 2:
-          return PieChartSectionData(
-            color: const Color(0xff845bef),
-            value: 15,
-            title: '15%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: const Color(0xffffffff),
-            ),
-          );
-        case 3:
-          return PieChartSectionData(
-            color: const Color(0xff13d38e),
-            value: 15,
-            title: '15%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: const Color(0xffffffff),
-            ),
-          );
-        default:
-          throw Error();
-      }
-    });
-  }
-}
-
-class Indicator extends StatelessWidget {
-  const Indicator({
-    super.key,
-    required this.color,
-    required this.text,
-    required this.isSquare,
-    this.size = 16,
-    this.textColor = const Color(0xff505050),
-  });
-
-  final Color color;
-  final String text;
-  final bool isSquare;
-  final double size;
-  final Color textColor;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        Container(
-          width: size,
-          height: size,
-          decoration: BoxDecoration(
-            shape: isSquare ? BoxShape.rectangle : BoxShape.circle,
-            color: color,
-          ),
-        ),
-        const SizedBox(
-          width: 4,
-        ),
-        Text(
-          text,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: textColor,
-          ),
-        )
-      ],
     );
   }
 }
