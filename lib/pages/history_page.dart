@@ -34,10 +34,7 @@ class _HistoryPageState extends State<HistoryPage> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            'Recent Transaction History',
-            style: TextStyle(
-              fontSize: 14,
-            ),
+            'Transaction History',
           ),
         ),
         body: Column(
@@ -131,7 +128,7 @@ class _HistoryPageState extends State<HistoryPage> {
                         ),
                         selected: selectionType == TYPE_LOAN ? true : false,
                         backgroundColor: Colors.white70,
-                        selectedColor: Colors.orange,
+                        selectedColor: Colors.yellow,
                         onSelected: (value) {
                           setState(() {
                             selectionType = TYPE_LOAN;

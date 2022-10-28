@@ -25,7 +25,10 @@ class _AddIncomeOrExpenseOrLoanPageState
   final _formKey = GlobalKey<FormState>();
   final amountController = TextEditingController();
   final noteController = TextEditingController();
+  final customCategoryController = TextEditingController();
   String? selectedCategory;
+
+  final _mFormKey = GlobalKey<FormState>();
 
   @override
   void didChangeDependencies() {
@@ -39,6 +42,7 @@ class _AddIncomeOrExpenseOrLoanPageState
     // TODO: implement dispose
     amountController.dispose();
     noteController.dispose();
+    customCategoryController.dispose();
     super.dispose();
   }
 
@@ -143,7 +147,7 @@ class _AddIncomeOrExpenseOrLoanPageState
                       ),
                       selected: selectionType == TYPE_LOAN ? true : false,
                       backgroundColor: Colors.white70,
-                      selectedColor: Colors.orange,
+                      selectedColor: Colors.yellow,
                       onSelected: (value) {
                         setState(() {
                           selectionType = TYPE_LOAN;
@@ -329,13 +333,52 @@ class _AddIncomeOrExpenseOrLoanPageState
                                     },
                                   ),
                                 ),
-                                if (selectedCategory == 'Add Category')
-                                  TextButton(
-                                      onPressed: () {}, child: Icon(Icons.add))
                               ],
                             ),
                           )
                         : SizedBox(),
+                    if (selectedCategory == 'Add Category')
+                      SizedBox(
+                        height: 8,
+                      ),
+                    if (selectedCategory == 'Add Category')
+                      Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          border: Border.all(
+                            width: 1,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                              ),
+                              height: 50,
+                              width: 50,
+                              child: Icon(
+                                Icons.add_box_outlined,
+                                color: Colors.white,
+                                size: 30,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Expanded(
+                              child: TextFormField(
+                                controller: customCategoryController,
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: 'Add Custom Category',
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     SizedBox(
                       height: 32,
                     ),
@@ -404,5 +447,16 @@ class _AddIncomeOrExpenseOrLoanPageState
         timestamp: DateTime.now().toString());
 
     transactionProvider.insertTransaction(model);
+  }
+
+  void _openDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text('Add Expense Category'),
+              content: TextField(
+                decoration: InputDecoration(hintText: 'Type new category...'),
+              ),
+            ));
   }
 }

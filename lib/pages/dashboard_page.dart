@@ -24,13 +24,14 @@ class DashboardPage extends StatefulWidget {
 class _DashboardPageState extends State<DashboardPage> {
   late TransactionProvider transactionProvider;
 
+
+
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     transactionProvider =
         Provider.of<TransactionProvider>(context, listen: false);
     //transactionProvider.getAllTransactionsList(1);
-
     super.didChangeDependencies();
   }
 
@@ -75,13 +76,41 @@ class _DashboardPageState extends State<DashboardPage> {
                     SizedBox(
                       width: 4.0,
                     ),
-                    Text(
-                      '15358614.0',
-                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                    FutureBuilder(
+                      future:transactionProvider.calculateTotalBalance(1),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return
+                            Text(
+                              snapshot.data.toString(),
+                              style:
+                              Theme
+                                  .of(context)
+                                  .textTheme
+                                  .titleMedium!
+                                  .copyWith(
+                                color: colorBlueDark,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            );
+                        }
+                        if (snapshot.hasError) {
+
+                        }
+                        return Text(
+                          '0',
+                          style:
+                          Theme
+                              .of(context)
+                              .textTheme
+                              .titleMedium!
+                              .copyWith(
                             color: colorBlueDark,
                             fontWeight: FontWeight.w600,
                           ),
-                    ),
+                        );
+                      },
+                    )
                   ],
                 ),
               ),
@@ -117,7 +146,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       child: DashboardCardGenerator(
                         cardType: 'Loan',
                         imagePath: 'assets/images/loan.png',
-                        iconColor: Color(0xFFFF9514),
+                        iconColor: Colors.yellow,
                       ),
                     ),
                   ],
@@ -140,7 +169,8 @@ class _DashboardPageState extends State<DashboardPage> {
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: Text(
             'Choose an option',
-            style: Theme.of(context)
+            style: Theme
+                .of(context)
                 .textTheme
                 .titleMedium!
                 .copyWith(color: Colors.blueGrey),
@@ -159,6 +189,11 @@ class _DashboardPageState extends State<DashboardPage> {
                 btnIconBgColor: Colors.orange,
                 btnBgColor: Colors.red,
                 btnOnClickRoute: LoanPage.routeName,
+                callback: (){
+                  setState(() {
+
+                  });
+                },
               ),
               CardButtonForDashboard(
                 btnTxt: "History",
@@ -166,6 +201,11 @@ class _DashboardPageState extends State<DashboardPage> {
                 btnIconBgColor: Colors.orange,
                 btnBgColor: Colors.green,
                 btnOnClickRoute: HistoryPage.routeName,
+                callback: (){
+                  setState(() {
+
+                  });
+                },
               ),
               CardButtonForDashboard(
                 btnTxt: 'ANALYSIS',
@@ -173,6 +213,11 @@ class _DashboardPageState extends State<DashboardPage> {
                 btnIconBgColor: Colors.orange,
                 btnBgColor: Colors.deepPurple,
                 btnOnClickRoute: AnalysisPage.routeName,
+                callback: (){
+                  setState(() {
+
+                  });
+                },
               ),
             ],
           ),
@@ -190,7 +235,8 @@ class _DashboardPageState extends State<DashboardPage> {
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: Text(
                   'Recent History',
-                  style: Theme.of(context)
+                  style: Theme
+                      .of(context)
                       .textTheme
                       .titleMedium!
                       .copyWith(color: Colors.blueGrey),
@@ -205,7 +251,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         itemCount: transactionProvider.transactionList.length,
                         itemBuilder: (context, index) {
                           final tModel =
-                              transactionProvider.transactionList[index];
+                          transactionProvider.transactionList[index];
                           return HistoryListSingleItem(tModel: tModel);
                         },
                       );

@@ -6,6 +6,7 @@ class CardButtonForDashboard extends StatelessWidget {
   IconData btnIcon;
   String btnTxt;
   String btnOnClickRoute;
+  Function callback;
 
   CardButtonForDashboard(
       {required this.btnTxt,
@@ -13,6 +14,7 @@ class CardButtonForDashboard extends StatelessWidget {
         required this.btnBgColor,
         required this.btnIconBgColor,
         required this.btnOnClickRoute,
+        required this.callback,
         Key? key})
       : super(key: key);
 
@@ -20,7 +22,7 @@ class CardButtonForDashboard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: (){
-        Navigator.pushNamed(context, btnOnClickRoute);
+        Navigator.pushNamed(context, btnOnClickRoute).then((value) => callback);
       },
       child: Card(
         elevation: 2.0,

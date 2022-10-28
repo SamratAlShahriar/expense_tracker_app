@@ -9,3 +9,10 @@ var expenseCategoryPredefinedList = [
   'Add Category',
 ];
 
+const timeDurationList = [
+  'Last 7 days',
+  'Last 30 days',
+  'Last 1 year',
+  'All',
+];
+

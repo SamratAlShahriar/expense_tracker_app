@@ -29,8 +29,8 @@ class _HomepageState extends State<Homepage> {
           child: Icon(Icons.add),
           isExtended: true,
           onPressed: () {
-            Navigator.pushNamed(
-                context, AddIncomeOrExpenseOrLoanPage.routeName);
+            Navigator.pushNamed(context, AddIncomeOrExpenseOrLoanPage.routeName)
+                .then((value) => setState(() {}));
           },
         ),
         bottomNavigationBar: BottomAppBar(
@@ -48,7 +48,8 @@ class _HomepageState extends State<Homepage> {
               IconButton(
                 icon: Icon(
                   Icons.dashboard,
-                  color: _bottomNavCurrentIndex == 0 ? Colors.white : Colors.grey,
+                  color:
+                      _bottomNavCurrentIndex == 0 ? Colors.white : Colors.grey,
                 ),
                 onPressed: () {
                   setState(() {

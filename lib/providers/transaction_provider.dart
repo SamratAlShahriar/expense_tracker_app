@@ -1,3 +1,4 @@
+import 'package:expense_tracker_app/constants/const_strings.dart';
 import 'package:expense_tracker_app/database/sqflite/db_helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:expense_tracker_app/model/transaction_model.dart';
@@ -7,6 +8,8 @@ import '../model/category_wise_expense_model.dart';
 class TransactionProvider extends ChangeNotifier{
   List<TransactionModel> transactionList = [];
   List<CategoryWiseExpenseModel> categoryWiseExpenseList = [];
+
+  double totalBalance = 0;
 
   Future<int> insertTransaction(TransactionModel transactionModel) async {
     return await DbHelper.insertTransaction(transactionModel);
@@ -37,8 +40,21 @@ class TransactionProvider extends ChangeNotifier{
 
   }
 
-  Future<double> getTypedTotalAmount(int id, String type){
-    return DbHelper.getTypedTotalAmount(id, type);
+  Future<double> getTypedTotalAmount(int id, String type) async{
+    return await DbHelper.getTypedTotalAmount(id, type);
+  }
+
+  Future<double> calculateTotalBalance(int id) async{
+    double result = 0;
+    await getTypedTotalAmount(id, TYPE_INCOME).then((value){
+      result += value;
+    });await getTypedTotalAmount(id, TYPE_EXPENSE).then((value){
+      result -= value;
+    });
+    await getTypedTotalAmount(id, TYPE_LOAN).then((value) {
+      result += value;
+    });
+    return result;
   }
 
   Future<List<CategoryWiseExpenseModel>> getCategoryWiseExpenseList(int id) async {
