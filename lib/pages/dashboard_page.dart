@@ -29,7 +29,7 @@ class _DashboardPageState extends State<DashboardPage> {
     // TODO: implement didChangeDependencies
     transactionProvider =
         Provider.of<TransactionProvider>(context, listen: false);
-    transactionProvider.getAllTransactionsList(1);
+    //transactionProvider.getAllTransactionsList(1);
 
     super.didChangeDependencies();
   }

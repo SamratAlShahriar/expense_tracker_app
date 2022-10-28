@@ -5,6 +5,7 @@ const datePattern = 'yyyy-MM-dd';
 const dateTimePattern = 'yyyy-MM-dd hh:mm:s a';
 
 String getFormattedDate(DateTime dateTime, String pattern) {
+
   return DateFormat(pattern).format(dateTime);
 }
 

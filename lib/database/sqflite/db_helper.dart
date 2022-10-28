@@ -43,6 +43,31 @@ class DbHelper {
         tMapList.length, (index) => TransactionModel.fromMap(tMapList[index]));
   }
 
+  static Future<List<TransactionModel>> getTypedTransactionsList({required int id, required String type}) async {
+    final db = await open();
+    final tMapList = await db.query(TABLE_TRANSACTION,
+        where: '$T_TRANS_COL_TYPE = ? AND $T_TRANS_COLS_U_ID = ?',
+        whereArgs: [type, id],
+        orderBy: '$T_TRANS_COL_TIMESTAMP DESC');
+
+    return List.generate(
+        tMapList.length, (index) => TransactionModel.fromMap(tMapList[index]));
+  }
+
+  static Future<List<TransactionModel>> getTimePeriodTransactionsList(
+      {required int userId,
+      required String startTime,
+      required String
+      endTime}) async {
+
+    final db = await open();
+    final tMapList = await db.rawQuery(
+        "SELECT * FROM $TABLE_TRANSACTION WHERE $T_TRANS_COL_DATE between '$startTime' AND '$endTime' and $T_TRANS_COLS_U_ID = $userId ORDER BY $T_TRANS_COL_TIMESTAMP DESC");
+
+    return List.generate(
+        tMapList.length, (index) => TransactionModel.fromMap(tMapList[index]));
+  }
+
   static Future<double> getTypedTotalAmount(int id, String type) async {
     final db = await open();
     final sumMap = await db.rawQuery(

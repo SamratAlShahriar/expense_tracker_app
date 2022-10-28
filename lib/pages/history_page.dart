@@ -17,13 +17,14 @@ class HistoryPage extends StatefulWidget {
 
 class _HistoryPageState extends State<HistoryPage> {
   late TransactionProvider transactionProvider;
+  String selectionType = "All";
 
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     transactionProvider =
         Provider.of<TransactionProvider>(context, listen: false);
-    transactionProvider.getAllTransactionsList(1);
+    //transactionProvider.getAllTransactionsList(1);
     super.didChangeDependencies();
   }
 
@@ -31,27 +32,135 @@ class _HistoryPageState extends State<HistoryPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            'Recent Transaction History',
+            style: TextStyle(
+              fontSize: 14,
+            ),
+          ),
+        ),
         body: Column(
           children: [
             Card(
-              child: Container(
-                width: double.infinity,
-                padding: EdgeInsets.symmetric(vertical: 8.0),
-                child: Text(
-                  'Recent Transaction History',
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.titleLarge!.copyWith(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  //choice of transaction type
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: 2.0,
+                      ),
+                      ChoiceChip(
+                        elevation: 1,
+                        label: Text(
+                          TYPE_ALL,
+                          style: TextStyle(
+                            fontSize: 14.0,
+                            color: selectionType == TYPE_ALL
+                                ? Colors.white
+                                : Colors.grey,
+                          ),
+                        ),
+                        selected: selectionType == TYPE_ALL ? true : false,
+                        backgroundColor: Colors.white70,
+                        selectedColor: colorBlueDark,
+                        onSelected: (value) {
+                          setState(() {
+                            selectionType = TYPE_ALL;
+                          });
+                        },
+                      ),
+                      ChoiceChip(
+                        elevation: 1,
+                        label: Text(
+                          TYPE_INCOME,
+                          style: TextStyle(
+                            fontSize: 14.0,
+                            color: selectionType == TYPE_INCOME
+                                ? Colors.white
+                                : Colors.grey,
+                          ),
+                        ),
+                        selected: selectionType == TYPE_INCOME ? true : false,
+                        backgroundColor: Colors.white70,
+                        selectedColor: Colors.green,
+                        onSelected: (value) {
+                          setState(() {
+                            selectionType = TYPE_INCOME;
+                          });
+                        },
+                      ),
+                      SizedBox(
+                        width: 2.0,
+                      ),
+                      ChoiceChip(
+                        elevation: 1,
+                        label: Text(
+                          TYPE_EXPENSE,
+                          style: TextStyle(
+                            fontSize: 14.0,
+                            color: selectionType == TYPE_EXPENSE
+                                ? Colors.white
+                                : Colors.grey,
+                          ),
+                        ),
+                        selected: selectionType == TYPE_EXPENSE ? true : false,
+                        backgroundColor: Colors.white70,
+                        selectedColor: Colors.red,
+                        onSelected: (value) {
+                          setState(() {
+                            selectionType = TYPE_EXPENSE;
+                          });
+                        },
+                      ),
+                      SizedBox(
+                        width: 2.0,
+                      ),
+                      ChoiceChip(
+                        elevation: 1,
+                        label: Text(
+                          TYPE_LOAN,
+                          style: TextStyle(
+                            fontSize: 14.0,
+                            color: selectionType == TYPE_LOAN
+                                ? Colors.white
+                                : Colors.grey,
+                          ),
+                        ),
+                        selected: selectionType == TYPE_LOAN ? true : false,
+                        backgroundColor: Colors.white70,
+                        selectedColor: Colors.orange,
+                        onSelected: (value) {
+                          setState(() {
+                            selectionType = TYPE_LOAN;
+                          });
+                        },
+                      ),
+                    ],
                   ),
-                ),
+                  IconButton(
+                    icon: Icon(Icons.sort),
+                    onPressed: () {},
+                  ),
+                ],
               ),
             ),
-            Expanded(
+            Container(
               child: FutureBuilder<List<TransactionModel>>(
-                future: transactionProvider.getAllTransactionsList(1),
+                future: selectionType == TYPE_ALL
+                    ? transactionProvider.getAllTransactionsList(1)
+                    : transactionProvider.getTypedTransactionsList(
+                        id: 1, type: selectionType),
                 builder: (context, snapshot) {
-                  if(snapshot.hasData){
-                    if(transactionProvider.transactionList.length < 1){
-                      return Center(child: Image.asset('assets/images/no_data.jpg', width: MediaQuery.of(context).size.width * 0.8,));
+                  if (snapshot.hasData) {
+                    if (transactionProvider.transactionList.length < 1) {
+                      return Center(
+                          child: Image.asset(
+                        'assets/images/no_data.jpg',
+                        width: MediaQuery.of(context).size.width * 0.8,
+                      ));
                     }
                     return Expanded(
                       child: ListView.builder(
@@ -60,17 +169,16 @@ class _HistoryPageState extends State<HistoryPage> {
                         scrollDirection: Axis.vertical,
                         itemCount: transactionProvider.transactionList.length,
                         itemBuilder: (context, index) {
-                          final tModel = transactionProvider.transactionList[index];
+                          final tModel =
+                              transactionProvider.transactionList[index];
                           return HistoryListSingleItem(tModel: tModel);
                         },
                       ),
                     );
-                  } else if(snapshot.hasError){
+                  } else if (snapshot.hasError) {
                     Image.asset('assets/images/no_data.jpg');
                   }
-                  return Center(child: CircularProgressIndicator(
-
-                  ));
+                  return Center(child: CircularProgressIndicator());
                 },
               ),
             ),
@@ -79,6 +187,4 @@ class _HistoryPageState extends State<HistoryPage> {
       ),
     );
   }
-
-
 }
