@@ -60,8 +60,8 @@ class TransactionProvider extends ChangeNotifier {
   }
 
   Future<List<CategoryWiseExpenseModel>> getCategoryWiseExpenseList(
-      {required int id}) async {
+      {required int id, required String startTime, required String endTime}) async {
     return categoryWiseExpenseList =
-        await DbHelper.getCategoryWiseExpenseList(id);
+        await DbHelper.getCategoryWiseExpenseList(id: id, startTime: startTime, endTime: endTime);
   }
 }

@@ -106,17 +106,17 @@ class DbHelper {
         "SELECT SUM($T_TRANS_COL_AMOUNT) AS $type FROM tbl_transaction WHERE u_id = $id AND $T_TRANS_COL_TYPE = '$type' ");
     final sumObj = sumMap.first;
     final sumRes = sumObj[type];
-    if(sumRes == null){
+    if (sumRes == null) {
       return 0;
     }
     return sumRes as double;
   }
 
   static Future<List<CategoryWiseExpenseModel>> getCategoryWiseExpenseList(
-      int id) async {
+      {required int id, required String startTime, required String endTime}) async {
     final db = await open();
     final categorySumMap = await db.rawQuery(
-        "SELECT SUM($T_TRANS_COL_AMOUNT) AS $T_COL_CATEGORY_SUM, $T_TRANS_COL_E_CATEG FROM $TABLE_TRANSACTION WHERE $T_TRANS_COL_TYPE = '$TYPE_EXPENSE' AND $T_TRANS_COLS_U_ID = $id GROUP BY $T_TRANS_COL_E_CATEG ORDER BY $T_COL_CATEGORY_SUM LIMIT 5");
+        "SELECT SUM($T_TRANS_COL_AMOUNT) AS $T_COL_CATEGORY_SUM, $T_TRANS_COL_E_CATEG FROM $TABLE_TRANSACTION WHERE $T_TRANS_COL_TYPE = '$TYPE_EXPENSE' AND $T_TRANS_COLS_U_ID = $id AND $T_TRANS_COL_DATE BETWEEN '$startTime' AND '$endTime' GROUP BY $T_TRANS_COL_E_CATEG ORDER BY $T_COL_CATEGORY_SUM LIMIT 5");
     return List.generate(categorySumMap.length,
         (index) => CategoryWiseExpenseModel.fromMap(categorySumMap[index]));
   }

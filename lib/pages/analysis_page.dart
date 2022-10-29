@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:expense_tracker_app/providers/transaction_provider.dart';
+import 'package:expense_tracker_app/utils/helper_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pie_chart/pie_chart.dart';
@@ -23,6 +24,8 @@ class _AnalysisPageState extends State<AnalysisPage> {
   String selectionType = TYPE_ALL;
 
   int? userId;
+
+  int selectedDays = 3650;
 
 
   @override
@@ -80,6 +83,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
                           onSelected: (value) {
                             setState(() {
                               selectionType = TYPE_ALL;
+                              selectedDays = 3650;
                             });
                           },
                         ),
@@ -103,6 +107,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
                           onSelected: (value) {
                             setState(() {
                               selectionType = LAST_7_DAYS;
+                              selectedDays = 7;
                             });
                           },
                         ),
@@ -126,6 +131,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
                           onSelected: (value) {
                             setState(() {
                               selectionType = LAST_30_DAYS;
+                              selectedDays = 30;
                             });
                           },
                         ),
@@ -149,6 +155,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
                           onSelected: (value) {
                             setState(() {
                               selectionType = LAST_1_YEAR;
+                              selectedDays = 365;
                             });
                           },
                         ),
@@ -162,7 +169,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
               height: 16,
             ),
             FutureBuilder(
-              future: transactionProvider.getCategoryWiseExpenseList(id: userId!),
+              future: transactionProvider.getCategoryWiseExpenseList(id: userId!, startTime: getPreviousDatetimeByDays(days: selectedDays).toString(), endTime: DateTime.now().toString()),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   final mData = transactionProvider.categoryWiseExpenseList;
