@@ -17,7 +17,9 @@ import 'loan_page.dart';
 class DashboardPage extends StatefulWidget {
   //static const String routeName = '/dashboard_page';
 
-  const DashboardPage({Key? key}) : super(key: key);
+  int? userId;
+
+  DashboardPage({required this.userId, Key? key}) : super(key: key);
 
   @override
   State<DashboardPage> createState() => _DashboardPageState();
@@ -27,31 +29,17 @@ class _DashboardPageState extends State<DashboardPage> {
   late TransactionProvider transactionProvider;
   late UserProvider userProvider;
 
-  int userID = 1;
-
-  int? getUser(){
-    SharedPrefHelper.getUserId().then((value) => userID = value);;
-    return userID;
-  }
-
-
-
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     transactionProvider =
         Provider.of<TransactionProvider>(context, listen: false);
-    userProvider =
-        Provider.of<UserProvider>(context, listen: false);
-    getUser();
-    //transactionProvider.getAllTransactionsList(1);
+    userProvider = Provider.of<UserProvider>(context, listen: false);
     super.didChangeDependencies();
   }
 
   @override
-  Widget build(BuildContext context){
-    getUser();
-
+  Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -92,8 +80,8 @@ class _DashboardPageState extends State<DashboardPage> {
                       width: 4.0,
                     ),
                     FutureBuilder(
-                      future: transactionProvider.calculateTotalBalance(
-                          id: userID),
+                      future:
+                          transactionProvider.calculateTotalBalance(id: widget.userId!),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
                           return Text(
@@ -140,6 +128,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         cardType: 'Income',
                         imagePath: 'assets/images/income.png',
                         iconColor: Colors.green,
+                        userID:widget.userId,
                       ),
                     ),
                     Expanded(
@@ -148,6 +137,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         cardType: 'Expense',
                         imagePath: 'assets/images/expense.png',
                         iconColor: Colors.red,
+                        userID:widget.userId,
                       ),
                     ),
                     Expanded(
@@ -156,6 +146,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         cardType: 'Loan',
                         imagePath: 'assets/images/loan.png',
                         iconColor: Colors.yellow,
+                        userID:widget.userId,
                       ),
                     ),
                   ],
@@ -197,6 +188,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 btnIconBgColor: Colors.orange,
                 btnBgColor: Colors.red,
                 btnOnClickRoute: LoanPage.routeName,
+                userId: widget.userId,
                 callback: () {
                   setState(() {});
                 },
@@ -207,6 +199,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 btnIconBgColor: Colors.orange,
                 btnBgColor: Colors.green,
                 btnOnClickRoute: HistoryPage.routeName,
+                userId: widget.userId,
                 callback: () {
                   setState(() {});
                 },
@@ -217,6 +210,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 btnIconBgColor: Colors.orange,
                 btnBgColor: Colors.deepPurple,
                 btnOnClickRoute: AnalysisPage.routeName,
+                userId:widget.userId,
                 callback: () {
                   setState(() {});
                 },
@@ -246,7 +240,7 @@ class _DashboardPageState extends State<DashboardPage> {
               Expanded(
                 child: FutureBuilder<List<TransactionModel>>(
                   future:
-                      transactionProvider.getAllTransactionsList(id: userID!),
+                      transactionProvider.getAllTransactionsList(id: widget.userId!),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       return ListView.builder(

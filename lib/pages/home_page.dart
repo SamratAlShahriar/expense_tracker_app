@@ -17,8 +17,16 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   int _bottomNavCurrentIndex = 0;
+  int? _userId;
 
-  var homeList = [DashboardPage(), ProfilePage()];
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    final args = ModalRoute.of(context)!.settings.arguments as int;
+    _userId = args;
+
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +38,7 @@ class _HomepageState extends State<Homepage> {
           child: Icon(Icons.add),
           isExtended: true,
           onPressed: () {
-            Navigator.pushNamed(context, AddIncomeOrExpenseOrLoanPage.routeName)
+            Navigator.pushNamed(context, AddIncomeOrExpenseOrLoanPage.routeName, arguments: _userId)
                 .then((value) => setState(() {}));
           },
         ),
@@ -73,7 +81,7 @@ class _HomepageState extends State<Homepage> {
             ],
           ),
         ),
-        body: homeList[_bottomNavCurrentIndex],
+        body:_bottomNavCurrentIndex == 0 ? DashboardPage(userId: _userId): ProfilePage(),
       ),
     );
   }

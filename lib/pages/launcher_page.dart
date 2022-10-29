@@ -23,9 +23,9 @@ class _LauncherPageState extends State<LauncherPage> {
 
   Future<void> redirectUser() async {
     if(await SharedPrefHelper.getLoggedInStatus()) {
-      final id = await SharedPrefHelper.getUserId();
-      await Provider.of<UserProvider>(context, listen: false).getUserById(id);
-      Navigator.pushReplacementNamed(context, Homepage.routeName);
+      final userId = await SharedPrefHelper.getUserId();
+      await Provider.of<UserProvider>(context, listen: false).getUserById(userId);
+      Navigator.pushReplacementNamed(context, Homepage.routeName, arguments: userId);
     } else {
       Navigator.pushReplacementNamed(context, LoginPage.routeName);
     }

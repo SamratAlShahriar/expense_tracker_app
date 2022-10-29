@@ -26,7 +26,6 @@ class _HistoryPageState extends State<HistoryPage> {
     if (userID == null) {
       userID = await SharedPrefHelper.getUserId();
     }
-
   }
 
   @override

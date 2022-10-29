@@ -12,6 +12,7 @@ import '../database/sharedpref/shared_pref_helper.dart';
 class AddIncomeOrExpenseOrLoanPage extends StatefulWidget {
   static const String routeName = '/add_income_expense_loan_page';
 
+
   const AddIncomeOrExpenseOrLoanPage({Key? key}) : super(key: key);
 
   @override
@@ -21,8 +22,6 @@ class AddIncomeOrExpenseOrLoanPage extends StatefulWidget {
 
 class _AddIncomeOrExpenseOrLoanPageState
     extends State<AddIncomeOrExpenseOrLoanPage> {
-  int? userID = 1;
-
   late TransactionProvider transactionProvider;
   String selectionType = "Income";
   DateTime? selectedDate;
@@ -34,16 +33,14 @@ class _AddIncomeOrExpenseOrLoanPageState
 
   final _mFormKey = GlobalKey<FormState>();
 
-  void getUser() async {
-    if (userID == null) {
-     await SharedPrefHelper.getUserId().then((value) => userID = value);
-    }
-  }
+  int? userId;
 
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     transactionProvider = Provider.of(context, listen: false);
+    final args = ModalRoute.of(context)!.settings.arguments as int;
+    userId = args;
     super.didChangeDependencies();
   }
 
@@ -450,7 +447,7 @@ class _AddIncomeOrExpenseOrLoanPageState
       return;
     }
     var model = TransactionModel(
-        userId: userID!,
+        userId: userId!,
         transactionType: selectionType,
         amount: double.parse(amountController.text),
         note: noteController.text,

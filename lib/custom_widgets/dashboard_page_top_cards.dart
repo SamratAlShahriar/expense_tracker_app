@@ -9,26 +9,20 @@ class DashboardCardGenerator extends StatelessWidget {
   String cardType;
   String imagePath;
   Color iconColor;
-  int? userID = 1;
+  int? userID;
 
   DashboardCardGenerator(
       {required this.cardType,
       required this.imagePath,
       required this.iconColor,
+      required this.userID,
       Key? key})
       : super(key: key);
-
-  void getUser() async {
-    if (userID == null) {
-      userID = await SharedPrefHelper.getUserId();
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     transactionProvider =
         Provider.of<TransactionProvider>(context, listen: false);
-    getUser();
 
     return Card(
       elevation: 0,

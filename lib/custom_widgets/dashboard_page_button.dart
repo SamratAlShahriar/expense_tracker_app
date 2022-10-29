@@ -7,6 +7,7 @@ class CardButtonForDashboard extends StatelessWidget {
   String btnTxt;
   String btnOnClickRoute;
   Function callback;
+  int? userId;
 
   CardButtonForDashboard(
       {required this.btnTxt,
@@ -15,6 +16,7 @@ class CardButtonForDashboard extends StatelessWidget {
         required this.btnIconBgColor,
         required this.btnOnClickRoute,
         required this.callback,
+        required this.userId,
         Key? key})
       : super(key: key);
 
