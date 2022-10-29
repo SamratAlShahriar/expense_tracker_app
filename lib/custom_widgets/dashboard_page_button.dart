@@ -1,3 +1,4 @@
+import 'package:expense_tracker_app/themes/colors.dart';
 import 'package:flutter/material.dart';
 
 class CardButtonForDashboard extends StatelessWidget {
@@ -24,11 +25,11 @@ class CardButtonForDashboard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: (){
-        Navigator.pushNamed(context, btnOnClickRoute).then((value) => callback);
+        Navigator.pushNamed(context, btnOnClickRoute, arguments: userId).then((value) => callback);
       },
       child: Card(
         elevation: 2.0,
-        color: btnBgColor,
+        color: Colors.white,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8.0)),
         child: Container(
@@ -55,7 +56,7 @@ class CardButtonForDashboard extends StatelessWidget {
                   btnTxt,
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      color: Colors.white,
+                      color: colorBlueDark,
                       fontWeight: FontWeight.w500
                   ),
                 ),

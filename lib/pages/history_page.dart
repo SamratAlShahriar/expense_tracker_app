@@ -20,27 +20,21 @@ class HistoryPage extends StatefulWidget {
 class _HistoryPageState extends State<HistoryPage> {
   late TransactionProvider transactionProvider;
   String selectionType = "All";
-  int? userID = 1;
+  int? userID;
 
-  void getUser() async {
-    if (userID == null) {
-      userID = await SharedPrefHelper.getUserId();
-    }
-  }
 
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     transactionProvider =
         Provider.of<TransactionProvider>(context, listen: false);
-    //transactionProvider.getAllTransactionsList(1);
+    final args = ModalRoute.of(context)!.settings.arguments as int;
+    userID = args;
     super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
-    getUser();
-
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -160,7 +154,7 @@ class _HistoryPageState extends State<HistoryPage> {
                 future: selectionType == TYPE_ALL
                     ? transactionProvider.getAllTransactionsList(id: userID!)
                     : transactionProvider.getTypedTransactionsList(
-                        id: 1, type: selectionType),
+                        id: userID!, type: selectionType),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     if (transactionProvider.transactionList.length < 1) {

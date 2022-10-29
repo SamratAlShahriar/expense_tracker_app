@@ -22,29 +22,22 @@ class _AnalysisPageState extends State<AnalysisPage> {
   late TransactionProvider transactionProvider;
   String selectionType = TYPE_ALL;
 
-  int? userID = 1;
+  int? userId;
 
-  void getUser() async {
-    if (userID == null) {
-      userID = await SharedPrefHelper.getUserId();
-    }
-  }
 
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
+    final args = ModalRoute.of(context)!.settings.arguments as int;
+    userId = args;
+
     transactionProvider =
         Provider.of<TransactionProvider>(context, listen: false);
-    transactionProvider.getCategoryWiseExpenseList(id: userID!);
-
     super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
-    getUser();
-
-
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -169,7 +162,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
               height: 16,
             ),
             FutureBuilder(
-              future: transactionProvider.getCategoryWiseExpenseList(id: userID!),
+              future: transactionProvider.getCategoryWiseExpenseList(id: userId!),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   final mData = transactionProvider.categoryWiseExpenseList;

@@ -68,7 +68,7 @@ class _HomepageState extends State<Homepage> {
               ),
               IconButton(
                 icon: Icon(
-                  Icons.person_pin,
+                  Icons.attractions_rounded,
                   color:
                       _bottomNavCurrentIndex == 1 ? Colors.white : Colors.grey,
                 ),

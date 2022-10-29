@@ -39,7 +39,10 @@ class _AddIncomeOrExpenseOrLoanPageState
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     transactionProvider = Provider.of(context, listen: false);
-    final args = ModalRoute.of(context)!.settings.arguments as int;
+    final args = ModalRoute
+        .of(context)!
+        .settings
+        .arguments as int;
     userId = args;
     super.didChangeDependencies();
   }
@@ -284,7 +287,7 @@ class _AddIncomeOrExpenseOrLoanPageState
                               selectedDate == null
                                   ? 'Choose a date'
                                   : getFormattedDate(
-                                      selectedDate!, datePattern),
+                                  selectedDate!, datePattern),
                             ),
                             onPressed: () {
                               selectDate();
@@ -296,55 +299,58 @@ class _AddIncomeOrExpenseOrLoanPageState
                     SizedBox(
                       height: 8,
                     ),
-                    selectionType == TYPE_EXPENSE && selectedCategory != 'Others'
+                    selectionType == TYPE_EXPENSE &&
+                        selectedCategory != 'Others'
                         ? Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.rectangle,
+                        border: Border.all(
+                          width: 1,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
                             decoration: BoxDecoration(
-                              shape: BoxShape.rectangle,
-                              border: Border.all(
-                                width: 1,
-                                color: Colors.grey,
+                              color: Colors.grey,
+                            ),
+                            height: 50,
+                            width: 50,
+                            child: Icon(
+                              Icons.category_outlined,
+                              color: Colors.white,
+                              size: 30,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Expanded(
+                            child: DropdownButtonFormField(
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
                               ),
+                              hint: Text('Select Expense Category'),
+                              items: expenseCategoryPredefinedList
+                                  .map((e) =>
+                                  DropdownMenuItem(
+                                      value: e, child: Text(e)))
+                                  .toList(),
+                              value: selectedCategory,
+                              onChanged: (value) {
+                                setState(() {
+                                  selectedCategory = value;
+                                });
+                              },
                             ),
-                            child: Row(
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey,
-                                  ),
-                                  height: 50,
-                                  width: 50,
-                                  child: Icon(
-                                    Icons.category_outlined,
-                                    color: Colors.white,
-                                    size: 30,
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Expanded(
-                                  child: DropdownButtonFormField(
-                                    decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                    ),
-                                    hint: Text('Select Expense Category'),
-                                    items: expenseCategoryPredefinedList
-                                        .map((e) => DropdownMenuItem(
-                                            value: e, child: Text(e)))
-                                        .toList(),
-                                    value: selectedCategory,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        selectedCategory = value;
-                                      });
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )
+                          ),
+                        ],
+                      ),
+                    )
                         : SizedBox(),
-                    if (selectionType == TYPE_EXPENSE && selectedCategory == 'Others')
+                    if (selectionType == TYPE_EXPENSE &&
+                        selectedCategory == 'Others')
                       Container(
                         decoration: BoxDecoration(
                           shape: BoxShape.rectangle,
@@ -373,6 +379,7 @@ class _AddIncomeOrExpenseOrLoanPageState
                             Expanded(
                               child: TextFormField(
                                 controller: customCategoryController,
+                                onChanged: (value) => selectedCategory = customCategoryController.text,
                                 decoration: InputDecoration(
                                     border: InputBorder.none,
                                     hintText: 'Add Custom Category',
@@ -380,6 +387,7 @@ class _AddIncomeOrExpenseOrLoanPageState
                                       onPressed: () {
                                         setState(() {
                                           selectedCategory = null;
+                                          customCategoryController.text = '';
                                         });
                                       },
                                       icon: Icon(Icons.close),
@@ -442,17 +450,30 @@ class _AddIncomeOrExpenseOrLoanPageState
   }
 
   void _saveData() {
+    if (selectionType == null) {
+      showMsg(context, 'Please select a type');
+      return;
+    }
+
     if (selectedDate == null) {
       showMsg(context, 'Please select a date');
       return;
     }
+
+    if (selectionType == TYPE_EXPENSE &&
+        (selectedCategory == null || selectedCategory == 'Others')) {
+      showMsg(context, 'Select expense category');
+      return;
+    }
+
+
     var model = TransactionModel(
         userId: userId!,
         transactionType: selectionType,
         amount: double.parse(amountController.text),
         note: noteController.text,
         expenseCategory:
-            selectionType == TYPE_EXPENSE ? selectedCategory : null,
+        selectionType == TYPE_EXPENSE ? selectedCategory : null,
         transactionDate: getFormattedDate(selectedDate!, datePattern),
         timestamp: DateTime.now().toString());
 
@@ -462,7 +483,8 @@ class _AddIncomeOrExpenseOrLoanPageState
   void _openDialog(BuildContext context) {
     showDialog(
         context: context,
-        builder: (context) => AlertDialog(
+        builder: (context) =>
+            AlertDialog(
               title: Text('Add Expense Category'),
               content: TextField(
                 decoration: InputDecoration(hintText: 'Type new category...'),
