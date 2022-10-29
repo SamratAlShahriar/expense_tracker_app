@@ -6,6 +6,8 @@ import 'package:expense_tracker_app/themes/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../database/sharedpref/shared_pref_helper.dart';
+
 class HistoryPage extends StatefulWidget {
   static const String routeName = '/history_page';
 
@@ -18,6 +20,14 @@ class HistoryPage extends StatefulWidget {
 class _HistoryPageState extends State<HistoryPage> {
   late TransactionProvider transactionProvider;
   String selectionType = "All";
+  int? userID = 1;
+
+  void getUser() async {
+    if (userID == null) {
+      userID = await SharedPrefHelper.getUserId();
+    }
+
+  }
 
   @override
   void didChangeDependencies() {
@@ -30,6 +40,8 @@ class _HistoryPageState extends State<HistoryPage> {
 
   @override
   Widget build(BuildContext context) {
+    getUser();
+
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -147,7 +159,7 @@ class _HistoryPageState extends State<HistoryPage> {
             Container(
               child: FutureBuilder<List<TransactionModel>>(
                 future: selectionType == TYPE_ALL
-                    ? transactionProvider.getAllTransactionsList(1)
+                    ? transactionProvider.getAllTransactionsList(id: userID!)
                     : transactionProvider.getTypedTransactionsList(
                         id: 1, type: selectionType),
                 builder: (context, snapshot) {

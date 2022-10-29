@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/transaction_provider.dart';
+import '../../database/sharedpref/shared_pref_helper.dart';
 
 class DashboardCardGenerator extends StatelessWidget {
   late TransactionProvider transactionProvider;
   String cardType;
   String imagePath;
   Color iconColor;
+  int? userID = 1;
+
   DashboardCardGenerator(
       {required this.cardType,
       required this.imagePath,
@@ -15,10 +18,17 @@ class DashboardCardGenerator extends StatelessWidget {
       Key? key})
       : super(key: key);
 
+  void getUser() async {
+    if (userID == null) {
+      userID = await SharedPrefHelper.getUserId();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     transactionProvider =
         Provider.of<TransactionProvider>(context, listen: false);
+    getUser();
 
     return Card(
       elevation: 0,
@@ -45,7 +55,8 @@ class DashboardCardGenerator extends StatelessWidget {
               style: TextStyle(color: iconColor),
             ),
             FutureBuilder(
-              future: transactionProvider.getTypedTotalAmount(1, cardType),
+              future: transactionProvider.getTypedTotalAmount(
+                  id: userID!, type: cardType),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return Text(
@@ -58,9 +69,12 @@ class DashboardCardGenerator extends StatelessWidget {
                   );
                 }
                 if (snapshot.hasError) {
-                  return Text('0', style: TextStyle(
-                    color: iconColor,
-                  ),);
+                  return Text(
+                    '0',
+                    style: TextStyle(
+                      color: iconColor,
+                    ),
+                  );
                 }
                 return CircularProgressIndicator();
               },

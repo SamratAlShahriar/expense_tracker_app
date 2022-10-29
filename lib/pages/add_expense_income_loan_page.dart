@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
+import '../database/sharedpref/shared_pref_helper.dart';
+
 class AddIncomeOrExpenseOrLoanPage extends StatefulWidget {
   static const String routeName = '/add_income_expense_loan_page';
 
@@ -19,6 +21,8 @@ class AddIncomeOrExpenseOrLoanPage extends StatefulWidget {
 
 class _AddIncomeOrExpenseOrLoanPageState
     extends State<AddIncomeOrExpenseOrLoanPage> {
+  int? userID = 1;
+
   late TransactionProvider transactionProvider;
   String selectionType = "Income";
   DateTime? selectedDate;
@@ -29,6 +33,12 @@ class _AddIncomeOrExpenseOrLoanPageState
   String? selectedCategory;
 
   final _mFormKey = GlobalKey<FormState>();
+
+  void getUser() async {
+    if (userID == null) {
+     await SharedPrefHelper.getUserId().then((value) => userID = value);
+    }
+  }
 
   @override
   void didChangeDependencies() {
@@ -440,7 +450,7 @@ class _AddIncomeOrExpenseOrLoanPageState
       return;
     }
     var model = TransactionModel(
-        userId: 1,
+        userId: userID!,
         transactionType: selectionType,
         amount: double.parse(amountController.text),
         note: noteController.text,

@@ -5,59 +5,63 @@ import 'package:expense_tracker_app/model/transaction_model.dart';
 
 import '../model/category_wise_expense_model.dart';
 
-class TransactionProvider extends ChangeNotifier{
+class TransactionProvider extends ChangeNotifier {
   List<TransactionModel> transactionList = [];
   List<CategoryWiseExpenseModel> categoryWiseExpenseList = [];
 
-  double totalBalance = 0;
+  double totalBalance = 10;
 
   Future<int> insertTransaction(TransactionModel transactionModel) async {
     return await DbHelper.insertTransaction(transactionModel);
   }
 
-  Future<List<TransactionModel>> getAllTransactionsList(int id) async {
+  Future<List<TransactionModel>> getAllTransactionsList(
+      {required int id}) async {
     transactionList = await DbHelper.getAllTransactionsList(id);
     notifyListeners();
     return transactionList;
   }
 
-  Future<List<TransactionModel>> getTypedTransactionsList({required int id, required String type}) async {
-    transactionList = await DbHelper.getTypedTransactionsList(id: id, type: type);
+  Future<List<TransactionModel>> getTypedTransactionsList(
+      {required int id, required String type}) async {
+    transactionList =
+        await DbHelper.getTypedTransactionsList(id: id, type: type);
     notifyListeners();
     return transactionList;
   }
 
   Future<List<TransactionModel>> getTimePeriodTransactionsList(
       {required int userId,
-        required String startTime,
-        required String,
-        endTime}) async{
-    return await DbHelper.getTimePeriodTransactionsList(userId: userId, startTime: startTime, endTime: endTime).then((value){
+      required String startTime,
+      required String,
+      endTime}) async {
+    return await DbHelper.getTimePeriodTransactionsList(
+            userId: userId, startTime: startTime, endTime: endTime)
+        .then((value) {
       transactionList = value;
-      this.notifyListeners();
       return value;
     });
-
   }
 
-  Future<double> getTypedTotalAmount(int id, String type) async{
+  Future<double> getTypedTotalAmount(
+      {required int id, required String type}) async {
     return await DbHelper.getTypedTotalAmount(id, type);
   }
 
-  Future<double> calculateTotalBalance(int id) async{
+  Future<double> calculateTotalBalance({required int id}) async {
     double result = 0;
-    await getTypedTotalAmount(id, TYPE_INCOME).then((value){
-      result += value;
-    });await getTypedTotalAmount(id, TYPE_EXPENSE).then((value){
-      result -= value;
-    });
-    await getTypedTotalAmount(id, TYPE_LOAN).then((value) {
-      result += value;
-    });
+    result += await getTypedTotalAmount(id: id, type: TYPE_INCOME);
+
+    result -= await getTypedTotalAmount(id: id, type: TYPE_EXPENSE);
+
+    result += await getTypedTotalAmount(id: id, type: TYPE_LOAN);
+    totalBalance = result;
     return result;
   }
 
-  Future<List<CategoryWiseExpenseModel>> getCategoryWiseExpenseList(int id) async {
-    return categoryWiseExpenseList = await DbHelper.getCategoryWiseExpenseList(id);
+  Future<List<CategoryWiseExpenseModel>> getCategoryWiseExpenseList(
+      {required int id}) async {
+    return categoryWiseExpenseList =
+        await DbHelper.getCategoryWiseExpenseList(id);
   }
 }

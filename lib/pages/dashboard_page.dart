@@ -5,9 +5,11 @@ import 'package:expense_tracker_app/custom_widgets/history_listview_single_item.
 import 'package:expense_tracker_app/pages/analysis_page.dart';
 import 'package:expense_tracker_app/pages/history_page.dart';
 import 'package:expense_tracker_app/providers/transaction_provider.dart';
+import 'package:expense_tracker_app/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../database/sharedpref/shared_pref_helper.dart';
 import '../model/transaction_model.dart';
 import '../themes/colors.dart';
 import 'loan_page.dart';
@@ -23,6 +25,14 @@ class DashboardPage extends StatefulWidget {
 
 class _DashboardPageState extends State<DashboardPage> {
   late TransactionProvider transactionProvider;
+  late UserProvider userProvider;
+
+  int userID = 1;
+
+  int? getUser(){
+    SharedPrefHelper.getUserId().then((value) => userID = value);;
+    return userID;
+  }
 
 
 
@@ -31,12 +41,17 @@ class _DashboardPageState extends State<DashboardPage> {
     // TODO: implement didChangeDependencies
     transactionProvider =
         Provider.of<TransactionProvider>(context, listen: false);
+    userProvider =
+        Provider.of<UserProvider>(context, listen: false);
+    getUser();
     //transactionProvider.getAllTransactionsList(1);
     super.didChangeDependencies();
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
+    getUser();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -77,37 +92,31 @@ class _DashboardPageState extends State<DashboardPage> {
                       width: 4.0,
                     ),
                     FutureBuilder(
-                      future:transactionProvider.calculateTotalBalance(1),
+                      future: transactionProvider.calculateTotalBalance(
+                          id: userID),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          return
-                            Text(
-                              snapshot.data.toString(),
-                              style:
-                              Theme
-                                  .of(context)
-                                  .textTheme
-                                  .titleMedium!
-                                  .copyWith(
-                                color: colorBlueDark,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            );
+                          return Text(
+                            snapshot.data.toString(),
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium!
+                                .copyWith(
+                                  color: colorBlueDark,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                          );
                         }
                         if (snapshot.hasError) {
-
+                          print(transactionProvider.totalBalance.toString());
                         }
                         return Text(
-                          '0',
+                          transactionProvider.totalBalance.toString(),
                           style:
-                          Theme
-                              .of(context)
-                              .textTheme
-                              .titleMedium!
-                              .copyWith(
-                            color: colorBlueDark,
-                            fontWeight: FontWeight.w600,
-                          ),
+                              Theme.of(context).textTheme.titleMedium!.copyWith(
+                                    color: colorBlueDark,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                         );
                       },
                     )
@@ -169,8 +178,7 @@ class _DashboardPageState extends State<DashboardPage> {
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: Text(
             'Choose an option',
-            style: Theme
-                .of(context)
+            style: Theme.of(context)
                 .textTheme
                 .titleMedium!
                 .copyWith(color: Colors.blueGrey),
@@ -189,10 +197,8 @@ class _DashboardPageState extends State<DashboardPage> {
                 btnIconBgColor: Colors.orange,
                 btnBgColor: Colors.red,
                 btnOnClickRoute: LoanPage.routeName,
-                callback: (){
-                  setState(() {
-
-                  });
+                callback: () {
+                  setState(() {});
                 },
               ),
               CardButtonForDashboard(
@@ -201,10 +207,8 @@ class _DashboardPageState extends State<DashboardPage> {
                 btnIconBgColor: Colors.orange,
                 btnBgColor: Colors.green,
                 btnOnClickRoute: HistoryPage.routeName,
-                callback: (){
-                  setState(() {
-
-                  });
+                callback: () {
+                  setState(() {});
                 },
               ),
               CardButtonForDashboard(
@@ -213,10 +217,8 @@ class _DashboardPageState extends State<DashboardPage> {
                 btnIconBgColor: Colors.orange,
                 btnBgColor: Colors.deepPurple,
                 btnOnClickRoute: AnalysisPage.routeName,
-                callback: (){
-                  setState(() {
-
-                  });
+                callback: () {
+                  setState(() {});
                 },
               ),
             ],
@@ -235,8 +237,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: Text(
                   'Recent History',
-                  style: Theme
-                      .of(context)
+                  style: Theme.of(context)
                       .textTheme
                       .titleMedium!
                       .copyWith(color: Colors.blueGrey),
@@ -244,14 +245,15 @@ class _DashboardPageState extends State<DashboardPage> {
               ),
               Expanded(
                 child: FutureBuilder<List<TransactionModel>>(
-                  future: transactionProvider.getAllTransactionsList(1),
+                  future:
+                      transactionProvider.getAllTransactionsList(id: userID!),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       return ListView.builder(
                         itemCount: transactionProvider.transactionList.length,
                         itemBuilder: (context, index) {
                           final tModel =
-                          transactionProvider.transactionList[index];
+                              transactionProvider.transactionList[index];
                           return HistoryListSingleItem(tModel: tModel);
                         },
                       );

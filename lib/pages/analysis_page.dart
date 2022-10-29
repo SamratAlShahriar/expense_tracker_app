@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:pie_chart/pie_chart.dart';
 
 import '../constants/const_strings.dart';
+import '../database/sharedpref/shared_pref_helper.dart';
 import '../themes/colors.dart';
 
 class AnalysisPage extends StatefulWidget {
@@ -21,18 +22,29 @@ class _AnalysisPageState extends State<AnalysisPage> {
   late TransactionProvider transactionProvider;
   String selectionType = TYPE_ALL;
 
+  int? userID = 1;
+
+  void getUser() async {
+    if (userID == null) {
+      userID = await SharedPrefHelper.getUserId();
+    }
+  }
+
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     transactionProvider =
         Provider.of<TransactionProvider>(context, listen: false);
-    transactionProvider.getCategoryWiseExpenseList(1);
+    transactionProvider.getCategoryWiseExpenseList(id: userID!);
 
     super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
+    getUser();
+
+
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -157,7 +169,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
               height: 16,
             ),
             FutureBuilder(
-              future: transactionProvider.getCategoryWiseExpenseList(1),
+              future: transactionProvider.getCategoryWiseExpenseList(id: userID!),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   final mData = transactionProvider.categoryWiseExpenseList;

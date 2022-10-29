@@ -21,7 +21,7 @@ class SharedPrefHelper {
 
   static Future<int> getUserId() async {
     final sf = await SharedPreferences.getInstance();
-    return sf.getInt(USER_ID) ?? 0;
+    return sf.getInt(USER_ID) ?? -1;
   }
 
 

@@ -1,3 +1,5 @@
+import 'package:expense_tracker_app/database/sharedpref/shared_pref_helper.dart';
+import 'package:expense_tracker_app/pages/launcher_page.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -14,7 +16,10 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Center(
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          SharedPrefHelper.setloggedInStatus(false);
+          if(mounted) Navigator.pushReplacementNamed(context, LauncherPage.routeName);
+        },
         child: Text('LOGOUT'),
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
