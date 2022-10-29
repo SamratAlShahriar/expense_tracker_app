@@ -289,7 +289,7 @@ class _AddIncomeOrExpenseOrLoanPageState
                     SizedBox(
                       height: 8,
                     ),
-                    selectionType == TYPE_EXPENSE
+                    selectionType == TYPE_EXPENSE && selectedCategory != 'Others'
                         ? Container(
                             decoration: BoxDecoration(
                               shape: BoxShape.rectangle,
@@ -337,11 +337,7 @@ class _AddIncomeOrExpenseOrLoanPageState
                             ),
                           )
                         : SizedBox(),
-                    if (selectedCategory == 'Add Category')
-                      SizedBox(
-                        height: 8,
-                      ),
-                    if (selectedCategory == 'Add Category')
+                    if (selectionType == TYPE_EXPENSE && selectedCategory == 'Others')
                       Container(
                         decoration: BoxDecoration(
                           shape: BoxShape.rectangle,
@@ -371,9 +367,16 @@ class _AddIncomeOrExpenseOrLoanPageState
                               child: TextFormField(
                                 controller: customCategoryController,
                                 decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  hintText: 'Add Custom Category',
-                                ),
+                                    border: InputBorder.none,
+                                    hintText: 'Add Custom Category',
+                                    suffixIcon: IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          selectedCategory = null;
+                                        });
+                                      },
+                                      icon: Icon(Icons.close),
+                                    )),
                               ),
                             ),
                           ],

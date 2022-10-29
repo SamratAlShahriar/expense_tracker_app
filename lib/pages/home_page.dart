@@ -1,5 +1,6 @@
 import 'package:expense_tracker_app/pages/dashboard_page.dart';
 import 'package:expense_tracker_app/pages/history_page.dart';
+import 'package:expense_tracker_app/pages/profile_page.dart';
 import 'package:expense_tracker_app/themes/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +18,7 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> {
   int _bottomNavCurrentIndex = 0;
 
-  var homeList = [DashboardPage(), HistoryPage()];
+  var homeList = [DashboardPage(), ProfilePage()];
 
   @override
   Widget build(BuildContext context) {

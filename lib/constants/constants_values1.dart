@@ -6,7 +6,7 @@ var expenseCategoryPredefinedList = [
   'Miscellaneous',
   'Shopping',
   'Travel',
-  'Add Category',
+  'Others'
 ];
 
 const timeDurationList = [
