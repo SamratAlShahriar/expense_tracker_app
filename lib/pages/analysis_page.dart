@@ -168,6 +168,9 @@ class _AnalysisPageState extends State<AnalysisPage> {
             SizedBox(
               height: 16,
             ),
+            Text('Expense by Category', style: Theme.of(context).textTheme.titleMedium!.copyWith(
+              color: colorBlueDark,
+            ),),
             FutureBuilder(
               future: transactionProvider.getCategoryWiseExpenseList(id: userId!, startTime: getPreviousDatetimeByDays(days: selectedDays).toString(), endTime: DateTime.now().toString()),
               builder: (context, snapshot) {
