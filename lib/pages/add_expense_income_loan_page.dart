@@ -12,7 +12,6 @@ import '../database/sharedpref/shared_pref_helper.dart';
 class AddIncomeOrExpenseOrLoanPage extends StatefulWidget {
   static const String routeName = '/add_income_expense_loan_page';
 
-
   const AddIncomeOrExpenseOrLoanPage({Key? key}) : super(key: key);
 
   @override
@@ -31,18 +30,13 @@ class _AddIncomeOrExpenseOrLoanPageState
   final customCategoryController = TextEditingController();
   String? selectedCategory;
 
-  final _mFormKey = GlobalKey<FormState>();
-
   int? userId;
 
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     transactionProvider = Provider.of(context, listen: false);
-    final args = ModalRoute
-        .of(context)!
-        .settings
-        .arguments as int;
+    final args = ModalRoute.of(context)!.settings.arguments as int;
     userId = args;
     super.didChangeDependencies();
   }
@@ -209,6 +203,15 @@ class _AddIncomeOrExpenseOrLoanPageState
                               inputFormatters: [
                                 FilteringTextInputFormatter.digitsOnly
                               ],
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Amount can not be empty';
+                                }
+                                if (int.parse(value) == 0) {
+                                  return 'Amount must be more than 0';
+                                }
+                                return null;
+                              },
                             ),
                           ),
                         ],
@@ -249,6 +252,12 @@ class _AddIncomeOrExpenseOrLoanPageState
                                 border: InputBorder.none,
                                 hintText: 'Note',
                               ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Note must not be empty';
+                                }
+                                return null;
+                              },
                             ),
                           ),
                         ],
@@ -287,7 +296,7 @@ class _AddIncomeOrExpenseOrLoanPageState
                               selectedDate == null
                                   ? 'Choose a date'
                                   : getFormattedDate(
-                                  selectedDate!, datePattern),
+                                      selectedDate!, datePattern),
                             ),
                             onPressed: () {
                               selectDate();
@@ -300,54 +309,59 @@ class _AddIncomeOrExpenseOrLoanPageState
                       height: 8,
                     ),
                     selectionType == TYPE_EXPENSE &&
-                        selectedCategory != 'Others'
+                            selectedCategory != 'Others'
                         ? Container(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.rectangle,
-                        border: Border.all(
-                          width: 1,
-                          color: Colors.grey,
-                        ),
-                      ),
-                      child: Row(
-                        children: [
-                          Container(
                             decoration: BoxDecoration(
-                              color: Colors.grey,
-                            ),
-                            height: 50,
-                            width: 50,
-                            child: Icon(
-                              Icons.category_outlined,
-                              color: Colors.white,
-                              size: 30,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Expanded(
-                            child: DropdownButtonFormField(
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
+                              shape: BoxShape.rectangle,
+                              border: Border.all(
+                                width: 1,
+                                color: Colors.grey,
                               ),
-                              hint: Text('Select Expense Category'),
-                              items: expenseCategoryPredefinedList
-                                  .map((e) =>
-                                  DropdownMenuItem(
-                                      value: e, child: Text(e)))
-                                  .toList(),
-                              value: selectedCategory,
-                              onChanged: (value) {
-                                setState(() {
-                                  selectedCategory = value;
-                                });
-                              },
                             ),
-                          ),
-                        ],
-                      ),
-                    )
+                            child: Row(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey,
+                                  ),
+                                  height: 50,
+                                  width: 50,
+                                  child: Icon(
+                                    Icons.category_outlined,
+                                    color: Colors.white,
+                                    size: 30,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Expanded(
+                                  child: DropdownButtonFormField(
+                                    decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                    ),
+                                    hint: Text('Select Expense Category'),
+                                    items: expenseCategoryPredefinedList
+                                        .map((e) => DropdownMenuItem(
+                                            value: e, child: Text(e)))
+                                        .toList(),
+                                    value: selectedCategory,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        selectedCategory = value;
+                                      });
+                                    },
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Please select a expense category';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
                         : SizedBox(),
                     if (selectionType == TYPE_EXPENSE &&
                         selectedCategory == 'Others')
@@ -379,7 +393,8 @@ class _AddIncomeOrExpenseOrLoanPageState
                             Expanded(
                               child: TextFormField(
                                 controller: customCategoryController,
-                                onChanged: (value) => selectedCategory = customCategoryController.text,
+                                onChanged: (value) => selectedCategory =
+                                    customCategoryController.text,
                                 decoration: InputDecoration(
                                     border: InputBorder.none,
                                     hintText: 'Add Custom Category',
@@ -450,6 +465,9 @@ class _AddIncomeOrExpenseOrLoanPageState
   }
 
   void _saveData() {
+    //for hide keyboard
+    FocusManager.instance.primaryFocus?.unfocus();
+
     if (selectionType == null) {
       showMsg(context, 'Please select a type');
       return;
@@ -466,25 +484,33 @@ class _AddIncomeOrExpenseOrLoanPageState
       return;
     }
 
+    if (_formKey.currentState!.validate()) {
+      var model = TransactionModel(
+          userId: userId!,
+          transactionType: selectionType,
+          amount: double.parse(amountController.text),
+          note: noteController.text,
+          expenseCategory:
+              selectionType == TYPE_EXPENSE ? selectedCategory : null,
+          transactionDate: getFormattedDate(selectedDate!, datePattern),
+          timestamp: DateTime.now().toString());
 
-    var model = TransactionModel(
-        userId: userId!,
-        transactionType: selectionType,
-        amount: double.parse(amountController.text),
-        note: noteController.text,
-        expenseCategory:
-        selectionType == TYPE_EXPENSE ? selectedCategory : null,
-        transactionDate: getFormattedDate(selectedDate!, datePattern),
-        timestamp: DateTime.now().toString());
+      transactionProvider.insertTransaction(model).then((value) {
+        showMsg(context, 'Record Inserted Succesfully');
+        transactionProvider.getAllTransactionsList(id: userId!);
 
-    transactionProvider.insertTransaction(model);
+        Navigator.pop(context);
+      }).catchError((error){
+        showMsg(context,'Something went wrong');
+        print(error.toString());
+      });
+    }
   }
 
   void _openDialog(BuildContext context) {
     showDialog(
         context: context,
-        builder: (context) =>
-            AlertDialog(
+        builder: (context) => AlertDialog(
               title: Text('Add Expense Category'),
               content: TextField(
                 decoration: InputDecoration(hintText: 'Type new category...'),

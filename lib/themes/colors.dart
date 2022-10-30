@@ -7,7 +7,7 @@ const colorBlack = Color(0xFF000000);
 
 const colorRedHevvyLight = Color(0x11ff0000);
 const colorGreenHevvyLight = Color(0x1100ff00);
-const colorYellowHevvyLight = Color(0x11ffff00);
+const colorOrangeHevvyLight = Color(0x11FBC900);
 
 const colorBlueDark = Color(0xFF020921);
 const colorBlueLight = Color(0x11020921);

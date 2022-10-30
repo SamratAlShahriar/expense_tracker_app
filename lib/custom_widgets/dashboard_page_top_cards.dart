@@ -1,3 +1,4 @@
+import 'package:expense_tracker_app/constants/const_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -49,8 +50,10 @@ class DashboardCardGenerator extends StatelessWidget {
               style: TextStyle(color: iconColor),
             ),
             FutureBuilder(
-              future: transactionProvider.getTypedTotalAmount(
-                  id: userID!, type: cardType),
+              future: cardType == TYPE_LOAN
+                  ? transactionProvider.calculatDueLoan(userID!)
+                  : transactionProvider.getTypedTotalAmount(
+                      id: userID!, type: cardType),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return Text(
@@ -66,6 +69,8 @@ class DashboardCardGenerator extends StatelessWidget {
                   return Text(
                     '0',
                     style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
                       color: iconColor,
                     ),
                   );

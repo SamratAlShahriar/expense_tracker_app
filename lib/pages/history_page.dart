@@ -133,7 +133,7 @@ class _HistoryPageState extends State<HistoryPage> {
                         ),
                         selected: selectionType == TYPE_LOAN ? true : false,
                         backgroundColor: Colors.white70,
-                        selectedColor: Colors.yellow,
+                        selectedColor: Colors.orange,
                         onSelected: (value) {
                           setState(() {
                             selectionType = TYPE_LOAN;

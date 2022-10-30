@@ -9,7 +9,8 @@ class TransactionProvider extends ChangeNotifier {
   List<TransactionModel> transactionList = [];
   List<CategoryWiseExpenseModel> categoryWiseExpenseList = [];
 
-  double totalBalance = 10;
+  double totalBalance = 0;
+  double totalLoanDue = 0;
 
   Future<int> insertTransaction(TransactionModel transactionModel) async {
     return await DbHelper.insertTransaction(transactionModel);
@@ -48,7 +49,19 @@ class TransactionProvider extends ChangeNotifier {
     return await DbHelper.getTypedTotalAmount(id, type);
   }
 
-  Future<double> calculateTotalBalance({required int id}) async {
+  Future<double> getLoanTotalPaidAmount(int id) async {
+    return DbHelper.getLoanTotalPaidAmount(id);
+  }
+
+  Future<double> calculatDueLoan(int id) async{
+    double result = 0;
+    result += await getTypedTotalAmount(id: id, type: TYPE_LOAN);
+    result -= await getLoanTotalPaidAmount(id);
+    totalLoanDue = result;
+    return result;
+  }
+
+    Future<double> calculateTotalBalance({required int id}) async {
     double result = 0;
     result += await getTypedTotalAmount(id: id, type: TYPE_INCOME);
 

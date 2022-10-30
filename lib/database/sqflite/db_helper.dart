@@ -70,7 +70,7 @@ class DbHelper {
     final tMapList = await db.query(TABLE_TRANSACTION,
         where: '$T_TRANS_COLS_U_ID = ?',
         whereArgs: [id],
-        orderBy: '$T_TRANS_COL_TIMESTAMP DESC');
+        orderBy: '$T_TRANS_COL_DATE DESC');
 
     return List.generate(
         tMapList.length, (index) => TransactionModel.fromMap(tMapList[index]));
@@ -82,7 +82,7 @@ class DbHelper {
     final tMapList = await db.query(TABLE_TRANSACTION,
         where: '$T_TRANS_COL_TYPE = ? AND $T_TRANS_COLS_U_ID = ?',
         whereArgs: [type, id],
-        orderBy: '$T_TRANS_COL_TIMESTAMP DESC');
+        orderBy: '$T_TRANS_COL_DATE DESC');
 
     return List.generate(
         tMapList.length, (index) => TransactionModel.fromMap(tMapList[index]));
@@ -94,7 +94,7 @@ class DbHelper {
       required String endTime}) async {
     final db = await open();
     final tMapList = await db.rawQuery(
-        "SELECT * FROM $TABLE_TRANSACTION WHERE $T_TRANS_COL_DATE between '$startTime' AND '$endTime' and $T_TRANS_COLS_U_ID = $userId ORDER BY $T_TRANS_COL_TIMESTAMP DESC");
+        "SELECT * FROM $TABLE_TRANSACTION WHERE $T_TRANS_COL_DATE between '$startTime' AND '$endTime' and $T_TRANS_COLS_U_ID = $userId ORDER BY $T_TRANS_COL_DATE DESC");
 
     return List.generate(
         tMapList.length, (index) => TransactionModel.fromMap(tMapList[index]));
@@ -106,6 +106,18 @@ class DbHelper {
         "SELECT SUM($T_TRANS_COL_AMOUNT) AS $type FROM tbl_transaction WHERE u_id = $id AND $T_TRANS_COL_TYPE = '$type' ");
     final sumObj = sumMap.first;
     final sumRes = sumObj[type];
+    if (sumRes == null) {
+      return 0;
+    }
+    return sumRes as double;
+  }
+
+  static Future<double> getLoanTotalPaidAmount(int id) async {
+    final db = await open();
+    final sumMap = await db.rawQuery(
+        "SELECT SUM($T_TRANS_COL_AMOUNT) AS $TYPE_EXPENSE FROM tbl_transaction WHERE u_id = $id AND $T_TRANS_COL_TYPE = '$TYPE_EXPENSE' AND $T_TRANS_COL_E_CATEG = '$CATEGORY_LOAN_PAY'");
+    final sumObj = sumMap.first;
+    final sumRes = sumObj[TYPE_EXPENSE];
     if (sumRes == null) {
       return 0;
     }

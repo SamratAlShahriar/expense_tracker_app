@@ -14,11 +14,18 @@ class HistoryListSingleItem extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 2.0),
       child: ListTile(
-        tileColor: _getTitleColorOnType(tModel.transactionType),
+        tileColor: _getTileBgColorOnType(tModel.transactionType),
         leading: _getIconBasedOnType(tModel.transactionType),
-        title: Text(tModel.note),
-        subtitle: Text(tModel.transactionDate),
-        trailing: Text(tModel.amount.toString()),
+        title: Text(tModel.transactionDate, style: TextStyle(color: colorBlueDark),),
+        subtitle: Text(tModel.note),
+        trailing: Text(
+          tModel.amount.toString(),
+          style: TextStyle(
+            fontSize: 22.0,
+            fontWeight: FontWeight.w600,
+            color: _getColorOnType(tModel.transactionType),
+          ),
+        ),
       ),
     );
   }
@@ -26,29 +33,49 @@ class HistoryListSingleItem extends StatelessWidget {
   Widget _getIconBasedOnType(String type) {
     switch (type) {
       case TYPE_EXPENSE:
-        return CircleAvatar(backgroundColor: Colors.red,
-            foregroundColor: Colors.white,
-            child: Icon(Icons.remove_circle_outline_outlined,));
+        return CircleAvatar(
+          backgroundColor: Colors.red,
+          foregroundColor: Colors.white,
+          child: Icon(
+            Icons.remove_circle_outline_outlined,
+          ),
+        );
       case TYPE_INCOME:
-        return CircleAvatar(backgroundColor: Colors.green,
+        return CircleAvatar(
+            backgroundColor: Colors.green,
             foregroundColor: Colors.white,
-            child: Icon(Icons.add_circle_outline,));
+            child: Icon(
+              Icons.add_circle_outline,
+            ));
       default:
         return CircleAvatar(
-            backgroundColor: Colors.yellow,
+            backgroundColor: Colors.orange,
             foregroundColor: Colors.white,
-            child: Icon(Icons.change_circle_outlined,));
+            child: Icon(
+              Icons.change_circle_outlined,
+            ));
     }
   }
 
-  Color _getTitleColorOnType(String type) {
+  Color _getColorOnType(String type) {
+    switch (type) {
+      case TYPE_EXPENSE:
+        return Colors.red;
+      case TYPE_INCOME:
+        return Colors.green;
+      default:
+        return Colors.orange;
+    }
+  }
+
+  Color _getTileBgColorOnType(String type) {
     switch (type) {
       case TYPE_EXPENSE:
         return colorRedHevvyLight;
       case TYPE_INCOME:
         return colorGreenHevvyLight;
       default:
-        return colorYellowHevvyLight;
+        return colorOrangeHevvyLight;
     }
   }
 }

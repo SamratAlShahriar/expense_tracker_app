@@ -2,8 +2,6 @@ import 'package:expense_tracker_app/themes/colors.dart';
 import 'package:flutter/material.dart';
 
 class CardButtonForDashboard extends StatelessWidget {
-  Color btnBgColor;
-  Color btnIconBgColor;
   IconData btnIcon;
   String btnTxt;
   String btnOnClickRoute;
@@ -13,8 +11,6 @@ class CardButtonForDashboard extends StatelessWidget {
   CardButtonForDashboard(
       {required this.btnTxt,
         required this.btnIcon,
-        required this.btnBgColor,
-        required this.btnIconBgColor,
         required this.btnOnClickRoute,
         required this.callback,
         required this.userId,
@@ -41,7 +37,7 @@ class CardButtonForDashboard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CircleAvatar(
-                  backgroundColor: btnIconBgColor,
+                  backgroundColor: colorBlueDark,
                   foregroundColor: Colors.white,
                   radius: 16.0,
                   child: Icon(

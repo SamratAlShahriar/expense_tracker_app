@@ -2,6 +2,7 @@ var expenseCategoryPredefinedList = [
   'Electricity Bill',
   'Food',
   'House Rent',
+  'Loan Pay',
   'Movie',
   'Miscellaneous',
   'Shopping',

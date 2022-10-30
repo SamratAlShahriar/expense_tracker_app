@@ -9,7 +9,6 @@ import 'package:expense_tracker_app/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../database/sharedpref/shared_pref_helper.dart';
 import '../model/transaction_model.dart';
 import '../themes/colors.dart';
 import 'loan_page.dart';
@@ -75,6 +74,7 @@ class _DashboardPageState extends State<DashboardPage> {
                     Icon(
                       Icons.account_balance_wallet,
                       color: Color(0x5f03032F),
+                      size: 20.0,
                     ),
                     SizedBox(
                       width: 4.0,
@@ -99,7 +99,7 @@ class _DashboardPageState extends State<DashboardPage> {
                           print(transactionProvider.totalBalance.toString());
                         }
                         return Text(
-                          transactionProvider.totalBalance.toString(),
+                          '0',
                           style:
                               Theme.of(context).textTheme.titleMedium!.copyWith(
                                     color: colorBlueDark,
@@ -145,7 +145,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       child: DashboardCardGenerator(
                         cardType: 'Loan',
                         imagePath: 'assets/images/loan.png',
-                        iconColor: Colors.yellow,
+                        iconColor: Colors.orange,
                         userID:widget.userId,
                       ),
                     ),
@@ -185,8 +185,6 @@ class _DashboardPageState extends State<DashboardPage> {
               CardButtonForDashboard(
                 btnTxt: "Loan",
                 btnIcon: Icons.monetization_on_outlined,
-                btnIconBgColor: Colors.orange,
-                btnBgColor: Colors.red,
                 btnOnClickRoute: LoanPage.routeName,
                 userId: widget.userId,
                 callback: () {
@@ -196,8 +194,6 @@ class _DashboardPageState extends State<DashboardPage> {
               CardButtonForDashboard(
                 btnTxt: "History",
                 btnIcon: Icons.history,
-                btnIconBgColor: Colors.orange,
-                btnBgColor: Colors.green,
                 btnOnClickRoute: HistoryPage.routeName,
                 userId: widget.userId,
                 callback: () {
@@ -207,8 +203,6 @@ class _DashboardPageState extends State<DashboardPage> {
               CardButtonForDashboard(
                 btnTxt: 'ANALYSIS',
                 btnIcon: Icons.analytics,
-                btnIconBgColor: Colors.orange,
-                btnBgColor: Colors.deepPurple,
                 btnOnClickRoute: AnalysisPage.routeName,
                 userId:widget.userId,
                 callback: () {
