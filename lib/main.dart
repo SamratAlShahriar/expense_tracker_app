@@ -33,6 +33,7 @@ class _MyPocketState extends State<MyPocket> {
         ChangeNotifierProvider(create: (context) => UserProvider(),),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         initialRoute: LauncherPage.routeName,
         theme: pocketTheme,
         routes: {

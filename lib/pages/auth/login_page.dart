@@ -105,6 +105,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       ElevatedButton(
                         onPressed: () {
+                          FocusManager.instance.primaryFocus?.unfocus();
                           isLogin = true;
                           _authenticate();
                         },
